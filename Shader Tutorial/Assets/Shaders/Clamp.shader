@@ -1,4 +1,4 @@
-Shader "Unlit/Gradient Range"
+Shader "Unlit/Clamp Gradient"
 {
 
     // input data
@@ -91,8 +91,19 @@ Shader "Unlit/Gradient Range"
                 /*float4 outColour = lerp(_Colour1, _Colour2, i.uv.x);
                 return outColour;*/
                 float t = InverseLerp(_ColourStart, _ColourEnd, i.uv.x);
+
+                // saturate actually means clamp
+                // its part of the standard library of shaders
+                //in the context of art saturate means something completely different
+                t = saturate(t);
                 
-                return t;
+                //frac = v - floor(v)
+                 //t = frac(t);
+                
+                float4 outColour = lerp(_Colour1, _Colour2, t);
+                return outColour;
+                
+                //return t;
             }
             ENDCG
         }

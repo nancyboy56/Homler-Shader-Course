@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Graident Range
-  m_Shader: {fileID: 4800000, guid: c80317973ab40aa4aaf59736518f7c57, type: 3}
+  m_Name: Frac
+  m_Shader: {fileID: 4800000, guid: acdc5cad27dd58d4eb4b740ea1213376, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -25,9 +25,9 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ColourEnd: 0.93
-    - _ColourStart: 0.33
+    - _ColourEnd: 0.51
+    - _ColourStart: 0.41
     m_Colors:
-    - _Colour1: {r: 0.039649345, g: 0.764151, b: 0.6634455, a: 1}
-    - _Colour2: {r: 0.990566, g: 0, b: 0, a: 1}
+    - _Colour1: {r: 0.4245283, g: 0.09050158, b: 0, a: 1}
+    - _Colour2: {r: 0.7647059, g: 0.1607843, b: 0.7235256, a: 1}
   m_BuildTextureStacks: []

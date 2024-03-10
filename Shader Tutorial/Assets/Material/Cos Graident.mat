@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Graident Range
-  m_Shader: {fileID: 4800000, guid: c80317973ab40aa4aaf59736518f7c57, type: 3}
+  m_Name: Cos Graident
+  m_Shader: {fileID: 4800000, guid: 2b3f5978034d30d4d91c131f0afb1c95, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -25,9 +25,8 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ColourEnd: 0.93
-    - _ColourStart: 0.33
+    - _Scale: 59.5
     m_Colors:
-    - _Colour1: {r: 0.039649345, g: 0.764151, b: 0.6634455, a: 1}
-    - _Colour2: {r: 0.990566, g: 0, b: 0, a: 1}
+    - _Colour1: {r: 0.5576479, g: 0.8773585, b: 0.24417053, a: 1}
+    - _Colour2: {r: 0.30250716, g: 0.4056604, b: 0.21239765, a: 1}
   m_BuildTextureStacks: []

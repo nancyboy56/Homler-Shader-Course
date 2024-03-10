@@ -11,17 +11,23 @@ Shader "Unlit/ShaderBasicNotes"
         _ValueTemp("Value Temp", Float) =1.0
     }
 
+    // can have multiple subshaders 
+    // normally only one 
+    //for example for different performance types can have multiple
+    
     SubShader
     {
         //Tags rendertype, queue (before or after another shader)
         // all that is set in subshader
         //more render pipline related 
+        // these are subsahder tags
         Tags { "RenderType"="Opaque" }
 
 
         //you can set a LOD level of an object and it will pick different subshaders
         //depending on what you set LOD too
         //Fredya doesnt uses it, she just deletes it
+        // LOD = level of detail
         LOD 100
 
         //pass has the rendering stuff
@@ -29,9 +35,12 @@ Shader "Unlit/ShaderBasicNotes"
         //graphics related
         Pass
         {
+            //sometimes can have other tags in the pass
 
             // anything inside of the CGPROGRAM and ENDCG is shader code
             // unity is practially HLSL but they have there own version called CG
+            // outside of CGPROGRAM is shaderlab, wrapper for unity shaders
+            
             CGPROGRAM
 
             //way of telling the complier what function the vertex shader is in
@@ -111,6 +120,8 @@ Shader "Unlit/ShaderBasicNotes"
 
                 // colon is sematics
                 //clip space postion of this vertex, between -1,1 for this particular position
+                //always have to set this one!
+                //but not the rest
                 float4 vertex : SV_POSITION;
 
                 //this can be any date you want it to be

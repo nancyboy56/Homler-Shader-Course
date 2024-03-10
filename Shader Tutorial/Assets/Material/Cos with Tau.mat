@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Graident Range
-  m_Shader: {fileID: 4800000, guid: c80317973ab40aa4aaf59736518f7c57, type: 3}
+  m_Name: Cos with Tau
+  m_Shader: {fileID: 4800000, guid: 4165ace40955d744d85b6d741bc1bdd4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -25,9 +25,8 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ColourEnd: 0.93
-    - _ColourStart: 0.33
+    - _Scale: -5
     m_Colors:
-    - _Colour1: {r: 0.039649345, g: 0.764151, b: 0.6634455, a: 1}
-    - _Colour2: {r: 0.990566, g: 0, b: 0, a: 1}
+    - _Colour1: {r: 0.70598966, g: 0.7095332, b: 0.8962264, a: 1}
+    - _Colour2: {r: 0.7074029, g: 0.5449448, b: 0.735849, a: 1}
   m_BuildTextureStacks: []
