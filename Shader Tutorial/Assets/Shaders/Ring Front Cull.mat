@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UV
-  m_Shader: {fileID: 4800000, guid: c80c0580dcc8ac246be3be4e86f6e235, type: 3}
-  m_Parent: {fileID: 2100000, guid: a5da817f5ba009a40a5164570bcdd516, type: 2}
+  m_Name: Ring Front Cull
+  m_Shader: {fileID: 4800000, guid: 2dda22900cbe91f4fab1fdc21bd4ea9c, type: 3}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -25,10 +25,13 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _CosCo: 0.1
-    - _Scale: 2
-    - _TimeScale: 1
-    - _ZigScale: 2
+    - _FadeScale: 0.5
+    - _Saturation: 1.81
+    - _TimeScale: -0.71
+    - _XOffsetScale: 10
+    - _YScale: 3.5
+    - _xOffsetCo: 0.1
     m_Colors:
-    - _Colour1: {r: 1, g: 1, b: 1, a: 1}
+    - _Colour1: {r: 0, g: 0, b: 0, a: 1}
+    - _Colour2: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
