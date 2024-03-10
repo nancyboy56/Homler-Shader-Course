@@ -26,7 +26,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColourEnd: 1
-    - _ColourStart: 0
+    - _ColourStart: 0.41
     m_Colors:
     - _Colour1: {r: 1, g: 1, b: 1, a: 1}
     - _Colour2: {r: 1, g: 1, b: 1, a: 1}
