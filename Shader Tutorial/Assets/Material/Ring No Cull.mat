@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ring Front Cull
-  m_Shader: {fileID: 4800000, guid: 2dda22900cbe91f4fab1fdc21bd4ea9c, type: 3}
+  m_Name: Ring No Cull
+  m_Shader: {fileID: 4800000, guid: 4df4cc59ef0ed824f8c0a6dad8b6cabd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -26,12 +26,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _FadeScale: 0.5
-    - _Saturation: 1.81
-    - _TimeScale: -0.71
-    - _XOffsetScale: 10
-    - _YScale: 3.5
+    - _Saturation: 3.92
+    - _TimeScale: -1.48
+    - _XOffsetScale: 4
+    - _YScale: 0.74
     - _xOffsetCo: 0.1
     m_Colors:
     - _Colour1: {r: 0, g: 0, b: 0, a: 1}
-    - _Colour2: {r: 1, g: 1, b: 1, a: 1}
+    - _Colour2: {r: 0.8023379, g: 0.6084906, b: 1, a: 1}
   m_BuildTextureStacks: []
