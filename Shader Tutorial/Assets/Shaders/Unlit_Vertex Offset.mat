@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Draw Behind
-  m_Shader: {fileID: 4800000, guid: 7673169bfdb83634b9d12fdd86e3cf07, type: 3}
+  m_Name: Unlit_Vertex Offset
+  m_Shader: {fileID: 4800000, guid: 09d1383ef430c9144a4d0f4bf973b85d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -25,12 +25,12 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _FadeScale: 0.9
+    - _FadeScale: 1
     - _Saturation: 1
-    - _TimeScale: -0.41
-    - _XOffsetScale: 2
-    - _YScale: 2
-    - _xOffsetCo: 0.1
+    - _TimeScale: -0.1
+    - _XOffsetScale: 0
+    - _YScale: 5
+    - _xOffsetCo: 0
     m_Colors:
     - _Colour1: {r: 0, g: 0, b: 0, a: 1}
     - _Colour2: {r: 1, g: 1, b: 1, a: 1}

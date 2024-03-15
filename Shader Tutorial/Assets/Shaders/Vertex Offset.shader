@@ -12,9 +12,9 @@ Shader "Unlit/Vertex Offset"
         _YScale("Y Axis Cos Scale", Float) = 2.0
         _XOffsetScale("X Offset Axis Cos Scale", Float) = 2.0
         _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.1
-        _TimeScale("Time Scale", Float) = 1
+        _TimeScale("Time Scale", Float) = -1
         _Saturation("Colour Saturation ", Float) = 1
-        _FadeScale("Fade Scale", Range(0,1)) = 0.9
+        _FadeScale("Fade Scale", Range(0,1)) = 1
     }
 
     SubShader
@@ -24,8 +24,7 @@ Shader "Unlit/Vertex Offset"
         // render type is mostly just for tagging like for post process effects
         // render queue is the actual order that things are going ot be drawn in
         Tags { 
-            "RenderType"="Transparent" 
-            "Queue"="Transparent"
+            "RenderType"="Opaque"
         }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -33,19 +32,19 @@ Shader "Unlit/Vertex Offset"
         
         Pass
         {
-            Cull Off
+            
             
             // depth buffer
-            Zwrite Off
+           // Zwrite Off
             
             // default value is Lequal means read the buffer
            // ZTest LEqual means less than or equal to
             //ZTest Always means always draw
             //Ztest Gequal means greater than or equal too
-            ZTest LEqual
+            
             
             //Additive
-            Blend One One
+           // Blend One One
             
             // multiply
             //Blend DstColor Zero
@@ -124,11 +123,12 @@ Shader "Unlit/Vertex Offset"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-
-                float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
+                //return float4(i.uv,0,1);
+                //float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
                 //float t = frac(i.uv.y);
-                float t = 0.5 * cos((i.uv.y + xOffset + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
-
+                float t = 0.5 * cos((i.uv.y + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                t *= 1-i.uv.y;
+                return t;
                 // this is a fade use the y uv for fading up and down and multiple it
                 t *= _FadeScale * (1- i.uv.y) * _Saturation;
 
