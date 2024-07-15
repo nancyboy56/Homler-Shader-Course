@@ -67,7 +67,7 @@ Shader "Unlit/ShaderBasicNotes"
             
             //need a value always to go along with the property
             //automaticaly gets the values from the property 
-            float _Value;
+            float _ValueTemp;
 
 
             //normally called appdata but it isnt a very good name for the struct
@@ -89,10 +89,11 @@ Shader "Unlit/ShaderBasicNotes"
                 //usually have normals there
                 float3 normals: NORMAL;
 
-                //could not be COLOR but you can get the colour of the vertex
+                //could not be COLOUR but you can get the colour of the vertex
                 float4 colour: COLOR;
-
+                
                 //tangents have be float4s!
+                //4th coordinate has sign information
                 float4 tangent: TANGENT;
 
                 //uv coordinates
