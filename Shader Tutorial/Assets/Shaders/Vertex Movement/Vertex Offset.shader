@@ -9,11 +9,10 @@ Shader "Unlit/Vertex Offset"
         _Colour2("Colour 2", Color) = (1,1,1,1)
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _YScale("Y Axis Cos Scale", Float) = 2.0
-        _XOffsetScale("X Offset Axis Cos Scale", Float) = 2.0
-        _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.5
-        _TimeScale("Time Scale", Float) = -1
-        _WaveAmp("Wave Amplitude", Range(0,0.2)) =0.1
+        _YScale("Y Axis Cos Scale", Range(0,10)) = 5
+        _xOffsetCo("Gradient Blend", Range(0,3)) = 0.6
+        _TimeScale("Movement Speed", Range(-0.15,0.15)) = 0.1
+        _WaveAmp("Wave Amplitude", Range(-1,5)) =0.1
     }
 
     SubShader
@@ -64,7 +63,7 @@ Shader "Unlit/Vertex Offset"
             /*float _ColourStart;
             float _ColourEnd;*/
             float _YScale;
-            float _XOffsetScale;
+            
             float _xOffsetCo;
             float _TimeScale;
             float _FadeScale;
@@ -104,10 +103,10 @@ Shader "Unlit/Vertex Offset"
             {
                 Interpolators o;
 
-                float wave = cos((v.uv0.x + _Time.y * 0.1) * _YScale * TAU);
+               float wave = cos((v.uv0.y + _Time.y * _TimeScale) * _YScale * TAU);
 
                 //using wave to modify the y coordinate of the vertex
-                v.vertex.x = wave * _WaveAmp;
+                v.vertex.y = wave * _WaveAmp;
 
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -136,7 +135,8 @@ Shader "Unlit/Vertex Offset"
               //  t *= 1-i.uv.y;
                 //float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
                 
-                return lerp(_Colour1, _Colour2, wave);
+              return lerp(_Colour1, _Colour2, wave);
+                //return wave;
          
             }
             ENDCG
