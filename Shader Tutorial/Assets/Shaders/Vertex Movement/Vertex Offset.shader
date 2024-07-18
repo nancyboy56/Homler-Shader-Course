@@ -11,10 +11,9 @@ Shader "Unlit/Vertex Offset"
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
         _YScale("Y Axis Cos Scale", Float) = 2.0
         _XOffsetScale("X Offset Axis Cos Scale", Float) = 2.0
-        _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.1
+        _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.5
         _TimeScale("Time Scale", Float) = -1
-        _Saturation("Colour Saturation ", Float) = 1
-        _FadeScale("Fade Scale", Range(0,1)) = 1
+        _WaveAmp("Wave Amplitude", Range(0,0.2)) =0.1
     }
 
     SubShader
@@ -70,6 +69,7 @@ Shader "Unlit/Vertex Offset"
             float _TimeScale;
             float _FadeScale;
             float _Saturation;
+            float _WaveAmp;
                             
             //automaticaally filled out by unity
             struct MeshData
@@ -103,6 +103,12 @@ Shader "Unlit/Vertex Offset"
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
+
+                float wave = cos((v.uv0.x + _Time.y * 0.1) * _YScale * TAU);
+
+                //using wave to modify the y coordinate of the vertex
+                v.vertex.x = wave * _WaveAmp;
+
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                  o.normal = UnityObjectToWorldNormal(v.normals);
@@ -126,20 +132,12 @@ Shader "Unlit/Vertex Offset"
                 //return float4(i.uv,0,1);
                 //float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
                 //float t = frac(i.uv.y);
-                float t = 0.5 * cos((i.uv.y + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
-                t *= 1-i.uv.y;
-                return t;
-                // this is a fade use the y uv for fading up and down and multiple it
-                t *= _FadeScale * (1- i.uv.y) * _Saturation;
-
-                float topBottomRemover = (abs(i.normal.y) < 0.99f);
-                // how to get rid of the tops
-                t= t * topBottomRemover ;
-                float waves =saturate(t);
-               // t = 
-                float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
+                float wave = _xOffsetCo * cos((i.uv.y + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+              //  t *= 1-i.uv.y;
+                //float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
                 
-                return colour * waves;
+                return lerp(_Colour1, _Colour2, wave);
+         
             }
             ENDCG
         }
