@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gradient Inverse Lerp
-  m_Shader: {fileID: 4800000, guid: 482134c9edb3a47488e64bf012f33792, type: 3}
+  m_Name: Graident Blue to Red 1
+  m_Shader: {fileID: 4800000, guid: 364238b2e01cea74da30b0f07290696c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -25,9 +25,9 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ColourEnd: 0.92
-    - _ColourStart: 0.33
+    - _Offset: 0
+    - _Scale: 1
     m_Colors:
-    - _Colour1: {r: 0.122774996, g: 0.8396226, b: 0.7861923, a: 1}
-    - _Colour2: {r: 0.8679245, g: 0.118725546, b: 0.118725546, a: 1}
+    - _Colour1: {r: 0.9622642, g: 0.9205056, b: 0.9205056, a: 1}
+    - _Colour2: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
