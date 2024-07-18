@@ -26,12 +26,13 @@ Material:
     m_Ints: []
     m_Floats:
     - _FadeScale: 1
-    - _Saturation: 1
-    - _TimeScale: -0.1
-    - _XOffsetScale: 0
-    - _YScale: 5
-    - _xOffsetCo: 0
+    - _Saturation: 0.96
+    - _TimeScale: -0.054
+    - _WaveAmp: 0.14
+    - _XOffsetScale: 4.71
+    - _YScale: 5.2
+    - _xOffsetCo: 0.6
     m_Colors:
-    - _Colour1: {r: 0, g: 0, b: 0, a: 1}
-    - _Colour2: {r: 1, g: 1, b: 1, a: 1}
+    - _Colour1: {r: 0.49411765, g: 0.55101997, b: 0.78039217, a: 1}
+    - _Colour2: {r: 0.801488, g: 0.90188676, b: 0.88723654, a: 1}
   m_BuildTextureStacks: []
