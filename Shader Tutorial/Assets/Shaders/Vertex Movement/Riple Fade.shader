@@ -1,4 +1,4 @@
-Shader "Unlit/Radial UV"
+Shader "Unlit/Ripple Fade"
 {
 
     // input data
@@ -140,9 +140,10 @@ Shader "Unlit/Radial UV"
                 float2 uvCentre = i.uv * 2 -1;
 
                 float radialDistance = length(uvCentre);
-                
-              return float4(radialDistance.xxx,1);
-                //return wave;
+                float waveX = _xOffsetCo * cos((radialDistance + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                waveX*= 1 - radialDistance;
+              //return float4(radialDistance.xxx,1);
+                return waveX;
          
             }
             ENDCG

@@ -1,4 +1,4 @@
-Shader "Unlit/Radial UV"
+Shader "Unlit/Ripple Animation"
 {
 
     // input data
@@ -97,17 +97,26 @@ Shader "Unlit/Radial UV"
                 float2 uv : TEXCOORD1;
             };
 
+             float GetWave(float2 uv)
+            {
+                  float2 uvCentre = uv * 2 -1;
+
+                float radialDistance = length(uvCentre);
+                float waveX = _xOffsetCo * cos((radialDistance + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                return waveX*= 1 - radialDistance;
+            }
+
      
             // vertex shader
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
 
-               float waveY = cos((v.uv0.y + _Time.y * _TimeScale) * _YScale * TAU);
-                float waveX = cos((v.uv0.x + _Time.y * _TimeScale) * _YScale * TAU);
+               /*float waveY = cos((v.uv0.y + _Time.y * _TimeScale) * _YScale * TAU);
+                float waveX = cos((v.uv0.x + _Time.y * _TimeScale) * _YScale * TAU);*/
 
                 //using wave to modify the y coordinate of the vertex
-                v.vertex.y = waveY * waveX * _WaveAmp;
+                v.vertex.y = GetWave(v.uv0);
 
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -125,6 +134,8 @@ Shader "Unlit/Radial UV"
             {
                 return (i-start)/(end-start);
             }
+
+           
             
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
@@ -137,12 +148,13 @@ Shader "Unlit/Radial UV"
               //  t *= 1-i.uv.y;
                 //float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
 
-                float2 uvCentre = i.uv * 2 -1;
+                /*float2 uvCentre = i.uv * 2 -1;
 
                 float radialDistance = length(uvCentre);
-                
-              return float4(radialDistance.xxx,1);
-                //return wave;
+                float waveX = _xOffsetCo * cos((radialDistance + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                waveX*= 1 - radialDistance;*/
+              //return float4(radialDistance.xxx,1);
+                return GetWave(i.uv);
          
             }
             ENDCG
