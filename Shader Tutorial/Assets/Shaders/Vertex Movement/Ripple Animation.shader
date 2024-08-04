@@ -9,7 +9,7 @@ Shader "Unlit/Ripple Animation"
         _Colour2("Colour 2", Color) = (1,1,1,1)
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _YScale("Y Axis Cos Scale", Range(0,10)) = 5
+        _YScale("Wave Amount", Range(0,10)) = 5
         _xOffsetCo("Gradient Blend", Range(0,3)) = 0.6
         _TimeScale("Movement Speed", Range(-0.15,0.15)) = 0.1
         _WaveAmp("Wave Amplitude", Range(-1,5)) =0.1
@@ -97,13 +97,14 @@ Shader "Unlit/Ripple Animation"
                 float2 uv : TEXCOORD1;
             };
 
+            // this function has too many ripples and idk why lmao but im moving. i did something 
              float GetWave(float2 uv)
             {
                   float2 uvCentre = uv * 2 -1;
 
                 float radialDistance = length(uvCentre);
                 float waveX = _xOffsetCo * cos((radialDistance + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
-                return waveX*= 1 - radialDistance;
+                return waveX *= 1 - radialDistance;
             }
 
      
@@ -116,7 +117,7 @@ Shader "Unlit/Ripple Animation"
                 float waveX = cos((v.uv0.x + _Time.y * _TimeScale) * _YScale * TAU);*/
 
                 //using wave to modify the y coordinate of the vertex
-                v.vertex.y = GetWave(v.uv0);
+                v.vertex.y = GetWave(v.uv0) * _WaveAmp;
 
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -124,7 +125,7 @@ Shader "Unlit/Ripple Animation"
 
                 //scaling in vertex shader bc its faster
                o.uv = v.uv0;
-               // o.uv = (v.uv0 + _Offset) * _Scale;
+               //o.uv = (v.uv0 + _Offset) * _Scale;
                 
                 return o;
             }
