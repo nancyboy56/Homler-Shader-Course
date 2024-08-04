@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Unlit_Mask
-  m_Shader: {fileID: 4800000, guid: 358a4f0bffd8e4345bafaf3fa0305a6d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 44a57f8c1a5a1af4f83b6722f1d2460c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,11 +24,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 891fd30c5d5d94b4e811e93185b42c68, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Pattern:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 39ec8233ec297874195c30f5b0bd10de, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SecondTex:
+        m_Texture: {fileID: 2800000, guid: a92d1823bcb9ac84fa824b88e82888f2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
