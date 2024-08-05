@@ -1,32 +1,28 @@
-Shader "Unlit/Health Texture"
+Shader "Unlit/Health Soultion"
 {
 
     // input data
     Properties 
     {
-        //get rid of scale and offset
-        [NoScaleOffset]_MainTex ("Texture", 2D) = "black" {}
+        _MainTex ("Texture", 2D) = "black" {}
         _StartColour("Health Colour", Color) = (1,0,0,1)
         _EndColour("Health Colour End", Color) =  (0,1,0,1)
         _Health("Health Percentage", Range(0,1)) = 0.1 
         _Start("Start Point", Range(0,1)) = 0.2
         _End("End Point", Range(0,1)) = 0.8
-        _Flash("Flash", Float) =5
         }
         
     
     SubShader
     {
        
-        Tags { "RenderType"="Transparent" 
-            "Queue"="Transparent" }
+        Tags { "RenderType"="Opaque" }
         
         //you can set a LOD level of an object and it will pick different subshaders
         LOD 100
         
         Pass
         {
-            Blend SrcAlpha OneMinusSrcAlpha
             CGPROGRAM
 
      
@@ -40,7 +36,6 @@ Shader "Unlit/Health Texture"
             #include "UnityCG.cginc"
 
             //define variables
-            #define TAU 6.283185307179586476925287
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _StartColour;
@@ -48,7 +43,6 @@ Shader "Unlit/Health Texture"
             float _Health;
             float _Start;
             float _End;
-            float _Flash;
             
             //automaticaally filled out by unity
             struct MeshData
@@ -89,10 +83,6 @@ Shader "Unlit/Health Texture"
             {
                 return (i-start)/(end-start);
             }
-            float4 Remap(float4 In, float2 InMinMax, float2 OutMinMax, out float4 Out)
-            {
-                return OutMinMax.x + (In - InMinMax.x) * (OutMinMax.y - OutMinMax.x) / (InMinMax.y - InMinMax.x);
-            }
             
             // vertex shader
             Interpolators vert (MeshData v)
@@ -106,7 +96,7 @@ Shader "Unlit/Health Texture"
 
                 //ingoring fog for now
                 UNITY_TRANSFER_FOG(o,o.vertex);
-               // o.uv = v.uv0; 
+                o.uv = v.uv0; 
                // o.uv = v.uv0; 
                 return o;
             }
@@ -115,31 +105,27 @@ Shader "Unlit/Health Texture"
             float4 frag (Interpolators i) : SV_Target
             {
                 
-                // sample the texture
-                // ignoring textures
-                float4 bar = tex2D(_MainTex, i.uv);
+                //mask
 
-                
-                // apply fog
-                //ignoring fog
-                // UNITY_APPLY_FOG(i.fogCoord, col);
+                //makes it into chunks
+                //float healthMask = _Health> floor(i.uv.x*8)/8;
 
-                // output white
-                //float t = InverseLerp(_Start, _End, _Health);
-                // float4 colour = float4(1,1,1,0);
-                 float4 colour = bar * (i.uv.x < _Health);
-                 //float t = 0.5 * cos((i.uv.y +  + _Time.y * 0.5) * 5 * TAU)+0.5;
-                float wave = 0.5* cos(_Time.y *_Flash)+0.5;
+                //saturate is the clamp function
+                float tHealth = saturate(InverseLerp(_Start, _End, _Health));
+                float healthMask = _Health> i.uv.x;
+                float3 healthColour = lerp(_StartColour, _EndColour, tHealth);
+                float3 background = float3(0,0,0);
+
+                //Mathf.Lerp() is clamped
+                //lerp() is unclamped
+                float3 outColour = lerp(background, healthColour, healthMask);
                 
-                 //float pluse = InverseLerp(1,0,);
                 
-                //Remap(i.uv.x, _Start, )
-                //clamp()
-                //clamp()
-                float alpha = colour.a * (_Health >_Start ) + wave * (_Health<_Start && colour.a == 1);
-                alpha = clamp(alpha, 0,1);
-                colour =float4(colour.rgb, alpha);
-                return colour;
+                // my solution lol
+                  /*float t = InverseLerp(_Start, _End, _Health);
+                 colour = lerp(_StartColour, _EndColour, t) * (i.uv.x < _Health);*/
+                
+                return float4(outColour, 1) ;
             }
             ENDCG
         }
