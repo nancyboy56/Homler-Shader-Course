@@ -106,6 +106,7 @@ Shader "Unlit/Texture Solution"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
+                // this was my new solution, also freya's solution
                 float4 col = tex2D(_MainTex, float2 (_Health, i.uv.y));
                 float healthMask = _Health> i.uv.x;
                 
