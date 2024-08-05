@@ -1,19 +1,17 @@
-Shader "Unlit/Diagonal"
+Shader "Unlit/UV Y"
 {
 
     // input data
     Properties 
     {
+        _MainTex ("Texture", 2D) = "white" {}
+        _Colour("Colour", Color) = (1,1,1,1)
         
-        _Colour1("Colour 1", Color) = (1,1,1,1)
-        _Colour2("Colour 2", Color) = (1,1,1,1)
-        /*_ColourStart("Colour Start", Range(0,1)) = 0.0
-        _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _Scale("Scale", Float) = 2.0
     }
 
     SubShader
     {
+       
         Tags { "RenderType"="Opaque" }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -29,15 +27,12 @@ Shader "Unlit/Diagonal"
             //bulit in functions
             #include "UnityCG.cginc"
 
-            #define TAU 6.283185307179586476925287
-
             //define variables
-            float4 _Colour1;
-            float4 _Colour2;
-            /*float _ColourStart;
-            float _ColourEnd;*/
-            float _Scale;
-                            
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            
+            float4 _Colour;
+            
             //automaticaally filled out by unity
             struct MeshData
             {
@@ -61,6 +56,7 @@ Shader "Unlit/Diagonal"
             {
                 //clip space postion of this vertex, between -1,1 for this particular position
                 float4 vertex : SV_POSITION;
+
                 float3 normal : TEXCOORD0;
                 float2 uv : TEXCOORD1;
             };
@@ -72,35 +68,20 @@ Shader "Unlit/Diagonal"
                 Interpolators o;
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-
-                //scaling in vertex shader bc its faster
-               o.uv = v.uv0;
-               // o.uv = (v.uv0 + _Offset) * _Scale;
                 
+                // object space (model/mesh space) to world space
+                //o.normal = UnityObjectToWorldNormal(v.normals);
+                //pass through
+                o.uv = v.uv0;
                 return o;
-            }
-
-            // Can give start and end points to lerps
-            float InverseLerp( float start, float end, float i)
-            {
-                return (i-start)/(end-start);
             }
             
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                 float xOffset = i.uv.x;
-                //float t = frac(i.uv.y);
-                float t = 0.5*cos((i.uv.y + xOffset) * _Scale* TAU)+0.5;
-
-               
-                
-                float4 outColour = lerp(_Colour1, _Colour2, t);
-                return outColour;
-
-                
-                
-                //return t;
+                // the uv coordinates depends on how the artist uv mapped the object
+                // tradtionally like in mesh editing programs uv corrdinates are 2d
+                return float4(i.uv.yyy,1);
             }
             ENDCG
         }

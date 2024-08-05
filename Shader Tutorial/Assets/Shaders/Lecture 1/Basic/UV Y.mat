@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UV Scale
-  m_Shader: {fileID: 4800000, guid: 10fbdb996715ad5449bd42e48fd1fa27, type: 3}
+  m_Name: UV Y
+  m_Shader: {fileID: 4800000, guid: c022e35684e16f14c917f364e7a9bd60, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,10 +22,13 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _Scale: 2.4
+    m_Floats: []
     m_Colors:
     - _Colour: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
