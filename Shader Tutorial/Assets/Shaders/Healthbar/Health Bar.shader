@@ -4,9 +4,12 @@ Shader "Unlit/ShaderTemplate"
     // input data
     Properties 
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _MainTex ("Texture", 2D) = "black" {}
+        _StartColour("Health Colour", Color) = (1,0,0,1)
+        _EndColour("Health Colour End", Color) =  (0,1,0,1)
+        _Health("Health Percentage", Range(0,1)) = 0.1 
+        }
         
-    }
     
     SubShader
     {
@@ -33,6 +36,9 @@ Shader "Unlit/ShaderTemplate"
             //define variables
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float4 _StartColour;
+            float4 _EndColour;
+            float _Health;
             
             //automaticaally filled out by unity
             struct MeshData
@@ -76,12 +82,14 @@ Shader "Unlit/ShaderTemplate"
                 Interpolators o;
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                //o.normal = UnityObjectToWorldNormal(v.normals);
                 
-                // o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv0, _MainTex);
 
                 //ingoring fog for now
                 UNITY_TRANSFER_FOG(o,o.vertex);
-                
+                o.uv = v.uv0; 
+               // o.uv = v.uv0; 
                 return o;
             }
             
@@ -91,7 +99,7 @@ Shader "Unlit/ShaderTemplate"
                 
                 // sample the texture
                 // ignoring textures
-                // fixed4 col = tex2D(_MainTex, i.uv);
+                float4 colour = tex2D(_MainTex, i.uv);
 
                 
                 // apply fog
@@ -99,7 +107,10 @@ Shader "Unlit/ShaderTemplate"
                 // UNITY_APPLY_FOG(i.fogCoord, col);
 
                 // output white
-                return float4(1,1,1,1);
+                 
+                 colour = lerp(_StartColour, _EndColour, _Health) * (i.uv.x < _Health);
+                
+                return colour ;
             }
             ENDCG
         }
