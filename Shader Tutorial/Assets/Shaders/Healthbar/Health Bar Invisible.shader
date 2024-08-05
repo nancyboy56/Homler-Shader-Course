@@ -1,4 +1,4 @@
-Shader "Unlit/Health Basic"
+Shader "Unlit/Health Invisible"
 {
 
     // input data
@@ -14,13 +14,15 @@ Shader "Unlit/Health Basic"
     SubShader
     {
        
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" 
+            "Queue"="Transparent" }
         
         //you can set a LOD level of an object and it will pick different subshaders
         LOD 100
         
         Pass
         {
+            Blend SrcAlpha OneMinusSrcAlpha
             CGPROGRAM
 
      
@@ -99,7 +101,7 @@ Shader "Unlit/Health Basic"
                 
                 // sample the texture
                 // ignoring textures
-                float4 colour = tex2D(_MainTex, i.uv);
+                //float4 colour = tex2D(_MainTex, i.uv);
 
                 
                 // apply fog
@@ -107,7 +109,7 @@ Shader "Unlit/Health Basic"
                 // UNITY_APPLY_FOG(i.fogCoord, col);
 
                 // output white
-                 
+                 float4 colour = float4(1,1,1,0);
                  colour = lerp(_StartColour, _EndColour, _Health) * (i.uv.x < _Health);
                 
                 return colour ;
