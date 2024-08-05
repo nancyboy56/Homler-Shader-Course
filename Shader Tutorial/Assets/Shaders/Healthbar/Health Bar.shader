@@ -8,6 +8,8 @@ Shader "Unlit/Health Basic"
         _StartColour("Health Colour", Color) = (1,0,0,1)
         _EndColour("Health Colour End", Color) =  (0,1,0,1)
         _Health("Health Percentage", Range(0,1)) = 0.1 
+        _Start("Start Point", Range(0,1)) = 0.2
+        _End("End Point", Range(0,1)) = 0.8
         }
         
     
@@ -39,6 +41,8 @@ Shader "Unlit/Health Basic"
             float4 _StartColour;
             float4 _EndColour;
             float _Health;
+            float _Start;
+            float _End;
             
             //automaticaally filled out by unity
             struct MeshData
@@ -75,6 +79,10 @@ Shader "Unlit/Health Basic"
                 
             };
 
+             float InverseLerp( float start, float end, float i)
+            {
+                return (i-start)/(end-start);
+            }
             
             // vertex shader
             Interpolators vert (MeshData v)
@@ -107,8 +115,8 @@ Shader "Unlit/Health Basic"
                 // UNITY_APPLY_FOG(i.fogCoord, col);
 
                 // output white
-                 
-                 colour = lerp(_StartColour, _EndColour, _Health) * (i.uv.x < _Health);
+                  float t = InverseLerp(_Start, _End, _Health);
+                 colour = lerp(_StartColour, _EndColour, t) * (i.uv.x < _Health);
                 
                 return colour ;
             }

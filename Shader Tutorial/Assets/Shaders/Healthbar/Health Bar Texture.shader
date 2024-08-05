@@ -1,4 +1,4 @@
-Shader "Unlit/Health Invisible"
+Shader "Unlit/Health Texture"
 {
 
     // input data
@@ -10,6 +10,7 @@ Shader "Unlit/Health Invisible"
         _Health("Health Percentage", Range(0,1)) = 0.1 
         _Start("Start Point", Range(0,1)) = 0.2
         _End("End Point", Range(0,1)) = 0.8
+        _Flash("Flash", Float) =5
         }
         
     
@@ -38,6 +39,7 @@ Shader "Unlit/Health Invisible"
             #include "UnityCG.cginc"
 
             //define variables
+            #define TAU 6.283185307179586476925287
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _StartColour;
@@ -45,6 +47,7 @@ Shader "Unlit/Health Invisible"
             float _Health;
             float _Start;
             float _End;
+            float _Flash;
             
             //automaticaally filled out by unity
             struct MeshData
@@ -102,7 +105,7 @@ Shader "Unlit/Health Invisible"
 
                 //ingoring fog for now
                 UNITY_TRANSFER_FOG(o,o.vertex);
-                o.uv = v.uv0; 
+               // o.uv = v.uv0; 
                // o.uv = v.uv0; 
                 return o;
             }
@@ -113,7 +116,7 @@ Shader "Unlit/Health Invisible"
                 
                 // sample the texture
                 // ignoring textures
-                //float4 colour = tex2D(_MainTex, i.uv);
+                float4 bar = tex2D(_MainTex, i.uv);
 
                 
                 // apply fog
@@ -121,11 +124,20 @@ Shader "Unlit/Health Invisible"
                 // UNITY_APPLY_FOG(i.fogCoord, col);
 
                 // output white
-                float t = InverseLerp(_Start, _End, _Health);
-                 float4 colour = float4(1,1,1,0);
-                 colour = lerp(_StartColour, _EndColour, t) * (i.uv.x < _Health);
-
+                //float t = InverseLerp(_Start, _End, _Health);
+                // float4 colour = float4(1,1,1,0);
+                 float4 colour = bar * (i.uv.x < _Health);
+                 //float t = 0.5 * cos((i.uv.y +  + _Time.y * 0.5) * 5 * TAU)+0.5;
+                float wave = 0.5* cos(_Time.y *_Flash)+0.5;
+                
+                 //float pluse = InverseLerp(1,0,);
+                
                 //Remap(i.uv.x, _Start, )
+                //clamp()
+                //clamp()
+                float alpha = colour.a * (_Health >_Start ) + wave * (_Health<_Start && colour.a == 1);
+                alpha = clamp(alpha, 0,1);
+                colour =float4(colour.rgb, alpha);
                 return colour;
             }
             ENDCG
