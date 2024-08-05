@@ -30,9 +30,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _End: 0.8
-    - _Health: 0.57
+    - _Health: 0.2
     - _Start: 0.2
     m_Colors:
     - _EndColour: {r: 0.12574351, g: 1, b: 0, a: 1}
-    - _StartColour: {r: 1, g: 0, b: 0, a: 1}
+    - _StartColour: {r: 1, g: 0.07844195, b: 0, a: 1}
   m_BuildTextureStacks: []

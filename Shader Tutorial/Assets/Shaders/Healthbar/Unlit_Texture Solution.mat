@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_Health Invisible
-  m_Shader: {fileID: 4800000, guid: 00badfff9bab72c4d8141ddac7118d13, type: 3}
+  m_Name: Unlit_Texture Solution
+  m_Shader: {fileID: 4800000, guid: f3fb1d80a5cf91d4988f6b2a6aca4d6b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,7 +30,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _End: 0.8
-    - _Health: 0.48
+    - _Health: 0.1
     - _Start: 0.2
     m_Colors:
     - _EndColour: {r: 0, g: 1, b: 0, a: 1}
