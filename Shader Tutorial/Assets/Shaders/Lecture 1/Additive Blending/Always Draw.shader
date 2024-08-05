@@ -1,4 +1,4 @@
-Shader "Unlit/Ring Back Side"
+Shader "Unlit/Always Draw"
 {
 
     // input data
@@ -33,13 +33,16 @@ Shader "Unlit/Ring Back Side"
         
         Pass
         {
-            // this is the default
-            //back face culling
-            //Cull Back
-            
+            Cull Off
             
             // depth buffer
             Zwrite Off
+            
+            // default value is Lequal means read the buffer
+           // ZTest LEqual
+            
+            ZTest Always
+            
             //Additive
             Blend One One
             
@@ -102,6 +105,7 @@ Shader "Unlit/Ring Back Side"
                 Interpolators o;
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                 o.normal = UnityObjectToWorldNormal(v.normals);
 
                 //scaling in vertex shader bc its faster
                o.uv = v.uv0;
@@ -126,14 +130,14 @@ Shader "Unlit/Ring Back Side"
 
                 // this is a fade use the y uv for fading up and down and multiple it
                 t *= _FadeScale * (1- i.uv.y) * _Saturation;
+                
+                // how to get rid of the tops
+                t= t * (abs(i.normal.y) < 0.99f);
                 t =saturate(t);
+               // t = 
                 float4 outColour = lerp(_Colour1, _Colour2, t);
                 
                 return outColour;
-
-                
-                
-                //return t;
             }
             ENDCG
         }

@@ -1,4 +1,4 @@
-Shader "Unlit/Ring Back Side"
+Shader "Unlit/Depth Buffer"
 {
 
     // input data
@@ -24,8 +24,7 @@ Shader "Unlit/Ring Back Side"
         // render type is mostly just for tagging like for post process effects
         // render queue is the actual order that things are going ot be drawn in
         Tags { 
-            "RenderType"="Transparent" 
-            "Queue"="Transparent"
+            "RenderType"="Opaque" 
         }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -33,12 +32,7 @@ Shader "Unlit/Ring Back Side"
         
         Pass
         {
-            // this is the default
-            //back face culling
-            //Cull Back
             
-            Cull Front
-            // depth buffer
             Zwrite Off
             //Additive
             Blend One One

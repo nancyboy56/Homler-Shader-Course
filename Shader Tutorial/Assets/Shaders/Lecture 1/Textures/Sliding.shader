@@ -1,13 +1,17 @@
-Shader "Unlit/BasicSwizzling"
+Shader "Unlit/Sliding Texture"
 {
 
     // input data
     Properties 
     {
+        // this is unity default texture. its 2D
+        //there are 3D textures and cube maps
+        //all work in diferent ways
         _MainTex ("Texture", 2D) = "white" {}
+        _TimeScale("Time Scale", float) = 0.1
         
     }
-
+    
     SubShader
     {
        
@@ -31,7 +35,13 @@ Shader "Unlit/BasicSwizzling"
             #include "UnityCG.cginc"
 
             //define variables
+
+            //sampler2D means 2D texture type
             sampler2D _MainTex;
+            float _TimeScale;
+
+            //this varaible is optional
+            // This has Tiling and offset information is in
             float4 _MainTex_ST;
             
             //automaticaally filled out by unity
@@ -52,7 +62,7 @@ Shader "Unlit/BasicSwizzling"
                 //uv coordinates
                 float2 uv0 : TEXCOORD0;
                 
-  
+                float4 uv1 : TEXCOORD1;
             };
             
             struct Interpolators
@@ -61,11 +71,14 @@ Shader "Unlit/BasicSwizzling"
                 float4 vertex : SV_POSITION;
 
                 float2 uv : TEXCOORD0;
-          
+                float4 uv1 : TEXCOORD1;
+                float4 uv2 : TEXCOORD2;
 
                 // for fog
                 UNITY_FOG_COORDS(1)
+                
             };
+
             
             // vertex shader
             Interpolators vert (MeshData v)
@@ -73,11 +86,15 @@ Shader "Unlit/BasicSwizzling"
                 Interpolators o;
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                
-                // o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
+                //this is optional
+                //this offset, scales with the texture
+                o.uv = TRANSFORM_TEX(v.uv0, _MainTex);
+                //can just do o.uv =v.uv but doesnt use the offset,scale
+                //if you dont use the default offset and scale values doesnt matter can just pass through uvs
+                o.uv.x += _Time.y * _TimeScale;
                 //ingoring fog for now
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                //UNITY_TRANSFER_FOG(o,o.vertex);
                 
                 return o;
             }
@@ -85,25 +102,20 @@ Shader "Unlit/BasicSwizzling"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                //swizzling
-                float4 myValue;
-                float2 othervalue = myValue.xy;
-
-                // can replace xy for rg (red and green)
-                float2 othervalue2 = myValue.rg;
-
-                // can even fliup rg to gr and it still understands
-                float2 othervalue3 = myValue.gr;
-
-                //possibles are endless!
-                float4 othervalue4 = myValue.xxxx;
-
-                // you cant write myValue.rrr1 to automanticaly put 1 in the alpha channel
-                // doesnt work!
                 
+                // sample the texture
+                // input colour from texture
+                //the space we are working in is from 0 to 1
+                // this is also known as normalised corrdinates
+                fixed4 col = tex2D(_MainTex, i.uv);
+
+                
+                // apply fog
+                //ignoring fog
+                // UNITY_APPLY_FOG(i.fogCoord, col);
 
                 // output white
-                return float4(0,0,0,1);
+                return col;
             }
             ENDCG
         }

@@ -1,4 +1,4 @@
-Shader "Unlit/Ring Always Draw"
+Shader "Unlit/Wave XY"
 {
 
     // input data
@@ -9,12 +9,10 @@ Shader "Unlit/Ring Always Draw"
         _Colour2("Colour 2", Color) = (1,1,1,1)
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _YScale("Y Axis Cos Scale", Float) = 2.0
-        _XOffsetScale("X Offset Axis Cos Scale", Float) = 2.0
-        _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.1
-        _TimeScale("Time Scale", Float) = 1
-        _Saturation("Colour Saturation ", Float) = 1
-        _FadeScale("Fade Scale", Range(0,1)) = 0.9
+        _YScale("Y Axis Cos Scale", Range(0,10)) = 5
+        _xOffsetCo("Gradient Blend", Range(0,3)) = 0.6
+        _TimeScale("Movement Speed", Range(-0.15,0.15)) = 0.1
+        _WaveAmp("Wave Amplitude", Range(-1,5)) =0.1
     }
 
     SubShader
@@ -24,8 +22,7 @@ Shader "Unlit/Ring Always Draw"
         // render type is mostly just for tagging like for post process effects
         // render queue is the actual order that things are going ot be drawn in
         Tags { 
-            "RenderType"="Transparent" 
-            "Queue"="Transparent"
+            "RenderType"="Opaque"
         }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -33,19 +30,19 @@ Shader "Unlit/Ring Always Draw"
         
         Pass
         {
-            Cull Off
+            
             
             // depth buffer
-            Zwrite Off
+           // Zwrite Off
             
             // default value is Lequal means read the buffer
            // ZTest LEqual means less than or equal to
             //ZTest Always means always draw
             //Ztest Gequal means greater than or equal too
-            ZTest GEqual
+            
             
             //Additive
-            Blend One One
+           // Blend One One
             
             // multiply
             //Blend DstColor Zero
@@ -66,11 +63,12 @@ Shader "Unlit/Ring Always Draw"
             /*float _ColourStart;
             float _ColourEnd;*/
             float _YScale;
-            float _XOffsetScale;
+            
             float _xOffsetCo;
             float _TimeScale;
             float _FadeScale;
             float _Saturation;
+            float _WaveAmp;
                             
             //automaticaally filled out by unity
             struct MeshData
@@ -104,6 +102,13 @@ Shader "Unlit/Ring Always Draw"
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
+
+               float waveY = cos((v.uv0.y + _Time.y * _TimeScale) * _YScale * TAU);
+                float waveX = cos((v.uv0.x + _Time.y * _TimeScale) * _YScale * TAU);
+
+                //using wave to modify the y coordinate of the vertex
+                v.vertex.y = waveY * waveX * _WaveAmp;
+
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                  o.normal = UnityObjectToWorldNormal(v.normals);
@@ -124,21 +129,17 @@ Shader "Unlit/Ring Always Draw"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-
-                float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
+                //return float4(i.uv,0,1);
+                //float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
                 //float t = frac(i.uv.y);
-                float t = 0.5 * cos((i.uv.y + xOffset + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
-
-                // this is a fade use the y uv for fading up and down and multiple it
-                t *= _FadeScale * (1- i.uv.y) * _Saturation;
+                float waveY = _xOffsetCo * cos((i.uv.y + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                float waveX = _xOffsetCo * cos((i.uv.x + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+              //  t *= 1-i.uv.y;
+                //float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
                 
-                // how to get rid of the tops
-                t= t * (abs(i.normal.y) < 0.99f);
-                t =saturate(t);
-               // t = 
-                float4 outColour = lerp(_Colour1, _Colour2, t);
-                
-                return outColour;
+              return lerp(_Colour1, _Colour2, waveY * waveX);
+                //return wave;
+         
             }
             ENDCG
         }

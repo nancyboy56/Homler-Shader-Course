@@ -1,4 +1,4 @@
-Shader "Unlit/Ring Always Draw"
+Shader "Unlit/No Cull"
 {
 
     // input data
@@ -14,7 +14,7 @@ Shader "Unlit/Ring Always Draw"
         _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.1
         _TimeScale("Time Scale", Float) = 1
         _Saturation("Colour Saturation ", Float) = 1
-        _FadeScale("Fade Scale", Range(0,1)) = 0.5
+        _FadeScale("Fade Scale", Range(0,1)) = 0.9
     }
 
     SubShader
@@ -39,9 +39,10 @@ Shader "Unlit/Ring Always Draw"
             Zwrite Off
             
             // default value is Lequal means read the buffer
-           // ZTest LEqual
-            
-            ZTest Always
+           // ZTest LEqual means less than or equal to
+            //ZTest Always means always draw
+            //Ztest Gequal means greater than or equal too
+            ZTest GEqual
             
             //Additive
             Blend One One

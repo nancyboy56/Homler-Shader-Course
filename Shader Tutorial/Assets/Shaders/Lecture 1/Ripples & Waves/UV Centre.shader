@@ -1,4 +1,4 @@
-Shader "Unlit/Wave XY Movement"
+Shader "Unlit/Uv Centre"
 {
 
     // input data
@@ -132,12 +132,12 @@ Shader "Unlit/Wave XY Movement"
                 //return float4(i.uv,0,1);
                 //float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
                 //float t = frac(i.uv.y);
-                float waveY = _xOffsetCo * cos((i.uv.y + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
-                float waveX = _xOffsetCo * cos((i.uv.x + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                /*float waveY = _xOffsetCo * cos((i.uv.y + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                float waveX = _xOffsetCo * cos((i.uv.x + _Time.y * _TimeScale) * _YScale * TAU)+0.5;*/
               //  t *= 1-i.uv.y;
                 //float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
                 
-              return lerp(_Colour1, _Colour2, waveY * waveX);
+              return float4(i.uv * 2 -1,0,1);
                 //return wave;
          
             }

@@ -1,52 +1,28 @@
-Shader "Unlit/Radial UV"
+Shader "Unlit/Cos Input"
 {
 
     // input data
     Properties 
     {
         
-        _Colour1("Colour 1", Color) = (0,0,0,1)
+        _Colour1("Colour 1", Color) = (1,1,1,1)
         _Colour2("Colour 2", Color) = (1,1,1,1)
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _YScale("Y Axis Cos Scale", Range(0,10)) = 5
-        _xOffsetCo("Gradient Blend", Range(0,3)) = 0.6
-        _TimeScale("Movement Speed", Range(-0.15,0.15)) = 0.1
-        _WaveAmp("Wave Amplitude", Range(-1,5)) =0.1
+        _Scale("Scale", Float) = 2.0
+        _ZigScale("Zigzang Scale", Float) = 2.0
+        _CosCo("Zigzang coeffceint", Float) = 0.1
     }
 
     SubShader
     {
-        // when dealing with transparent you want to sent the render type to transparent
-        //also set render queue to transparent
-        // render type is mostly just for tagging like for post process effects
-        // render queue is the actual order that things are going ot be drawn in
-        Tags { 
-            "RenderType"="Opaque"
-        }
+        Tags { "RenderType"="Opaque" }
         
         //you can set a LOD level of an object and it will pick different subshaders
         LOD 100
         
         Pass
         {
-            
-            
-            // depth buffer
-           // Zwrite Off
-            
-            // default value is Lequal means read the buffer
-           // ZTest LEqual means less than or equal to
-            //ZTest Always means always draw
-            //Ztest Gequal means greater than or equal too
-            
-            
-            //Additive
-           // Blend One One
-            
-            // multiply
-            //Blend DstColor Zero
-            
             CGPROGRAM
             
             #pragma vertex vert
@@ -62,13 +38,9 @@ Shader "Unlit/Radial UV"
             float4 _Colour2;
             /*float _ColourStart;
             float _ColourEnd;*/
-            float _YScale;
-            
-            float _xOffsetCo;
-            float _TimeScale;
-            float _FadeScale;
-            float _Saturation;
-            float _WaveAmp;
+            float _Scale;
+            float _ZigScale;
+            float _CosCo;
                             
             //automaticaally filled out by unity
             struct MeshData
@@ -102,16 +74,8 @@ Shader "Unlit/Radial UV"
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
-
-               float waveY = cos((v.uv0.y + _Time.y * _TimeScale) * _YScale * TAU);
-                float waveX = cos((v.uv0.x + _Time.y * _TimeScale) * _YScale * TAU);
-
-                //using wave to modify the y coordinate of the vertex
-                v.vertex.y = waveY * waveX * _WaveAmp;
-
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                 o.normal = UnityObjectToWorldNormal(v.normals);
 
                 //scaling in vertex shader bc its faster
                o.uv = v.uv0;
@@ -129,21 +93,18 @@ Shader "Unlit/Radial UV"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                //return float4(i.uv,0,1);
-                //float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
+                 float xOffset = _CosCo * cos(i.uv.y*TAU*_ZigScale);
                 //float t = frac(i.uv.y);
-                /*float waveY = _xOffsetCo * cos((i.uv.y + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
-                float waveX = _xOffsetCo * cos((i.uv.x + _Time.y * _TimeScale) * _YScale * TAU)+0.5;*/
-              //  t *= 1-i.uv.y;
-                //float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
+                float t = 0.5*cos((i.uv.x + xOffset) * _Scale* TAU)+0.5;
 
-                float2 uvCentre = i.uv * 2 -1;
-
-                float radialDistance = length(uvCentre);
+               
                 
-              return float4(radialDistance.xxx,1);
-                //return wave;
-         
+                float4 outColour = lerp(_Colour1, _Colour2, t);
+                return outColour;
+
+                
+                
+                //return t;
             }
             ENDCG
         }

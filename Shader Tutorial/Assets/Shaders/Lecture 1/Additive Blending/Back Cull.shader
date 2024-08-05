@@ -1,4 +1,4 @@
-Shader "Unlit/Radial Ripple"
+Shader "Unlit/Cull Back"
 {
 
     // input data
@@ -9,10 +9,12 @@ Shader "Unlit/Radial Ripple"
         _Colour2("Colour 2", Color) = (1,1,1,1)
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _YScale("Y Axis Cos Scale", Range(0,10)) = 5
-        _xOffsetCo("Gradient Blend", Range(0,3)) = 0.6
-        _TimeScale("Movement Speed", Range(-0.15,0.15)) = 0.1
-        _WaveAmp("Wave Amplitude", Range(-1,5)) =0.1
+        _YScale("Y Axis Cos Scale", Float) = 2.0
+        _XOffsetScale("X Offset Axis Cos Scale", Float) = 2.0
+        _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.1
+        _TimeScale("Time Scale", Float) = 1
+        _Saturation("Colour Saturation ", Float) = 1
+        _FadeScale("Fade Scale", Range(0,1)) = 0.5
     }
 
     SubShader
@@ -22,7 +24,8 @@ Shader "Unlit/Radial Ripple"
         // render type is mostly just for tagging like for post process effects
         // render queue is the actual order that things are going ot be drawn in
         Tags { 
-            "RenderType"="Opaque"
+            "RenderType"="Transparent" 
+            "Queue"="Transparent"
         }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -30,19 +33,15 @@ Shader "Unlit/Radial Ripple"
         
         Pass
         {
+            // this is the default
+            //back face culling
+            //Cull Back
             
             
             // depth buffer
-           // Zwrite Off
-            
-            // default value is Lequal means read the buffer
-           // ZTest LEqual means less than or equal to
-            //ZTest Always means always draw
-            //Ztest Gequal means greater than or equal too
-            
-            
+            Zwrite Off
             //Additive
-           // Blend One One
+            Blend One One
             
             // multiply
             //Blend DstColor Zero
@@ -63,12 +62,11 @@ Shader "Unlit/Radial Ripple"
             /*float _ColourStart;
             float _ColourEnd;*/
             float _YScale;
-            
+            float _XOffsetScale;
             float _xOffsetCo;
             float _TimeScale;
             float _FadeScale;
             float _Saturation;
-            float _WaveAmp;
                             
             //automaticaally filled out by unity
             struct MeshData
@@ -102,16 +100,8 @@ Shader "Unlit/Radial Ripple"
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
-
-               float waveY = cos((v.uv0.y + _Time.y * _TimeScale) * _YScale * TAU);
-                float waveX = cos((v.uv0.x + _Time.y * _TimeScale) * _YScale * TAU);
-
-                //using wave to modify the y coordinate of the vertex
-                v.vertex.y = waveY * waveX * _WaveAmp;
-
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                 o.normal = UnityObjectToWorldNormal(v.normals);
 
                 //scaling in vertex shader bc its faster
                o.uv = v.uv0;
@@ -129,22 +119,21 @@ Shader "Unlit/Radial Ripple"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                //return float4(i.uv,0,1);
-                //float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
+
+                float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
                 //float t = frac(i.uv.y);
-                /*float waveY = _xOffsetCo * cos((i.uv.y + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
-                float waveX = _xOffsetCo * cos((i.uv.x + _Time.y * _TimeScale) * _YScale * TAU)+0.5;*/
-              //  t *= 1-i.uv.y;
-                //float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
+                float t = 0.5 * cos((i.uv.y + xOffset + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
 
-                float2 uvCentre = i.uv * 2 -1;
-
-                float radialDistance = length(uvCentre);
-                float waveX = _xOffsetCo * cos((radialDistance + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                // this is a fade use the y uv for fading up and down and multiple it
+                t *= _FadeScale * (1- i.uv.y) * _Saturation;
+                t =saturate(t);
+                float4 outColour = lerp(_Colour1, _Colour2, t);
                 
-              //return float4(radialDistance.xxx,1);
-                return waveX;
-         
+                return outColour;
+
+                
+                
+                //return t;
             }
             ENDCG
         }

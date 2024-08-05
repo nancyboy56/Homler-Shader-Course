@@ -1,4 +1,4 @@
-Shader "Unlit/HelloWorld"
+Shader "Unlit/ShaderTemplate"
 {
 
     // input data
@@ -7,7 +7,7 @@ Shader "Unlit/HelloWorld"
         _MainTex ("Texture", 2D) = "white" {}
         
     }
-
+    
     SubShader
     {
        
@@ -19,8 +19,7 @@ Shader "Unlit/HelloWorld"
         Pass
         {
             CGPROGRAM
-
-     
+            
             #pragma vertex vert
             #pragma fragment frag
             
@@ -31,6 +30,7 @@ Shader "Unlit/HelloWorld"
             #include "UnityCG.cginc"
 
             //define variables
+            #define TAU 6.283185307179586476925287
             sampler2D _MainTex;
             float4 _MainTex_ST;
             
@@ -50,7 +50,7 @@ Shader "Unlit/HelloWorld"
                 float4 tangent: TANGENT;
 
                 //uv coordinates
-                float2 uv0 : TEXCOORD0;
+                float2 uv : TEXCOORD0;
                 
                 float4 uv1 : TEXCOORD1;
             };
@@ -77,7 +77,7 @@ Shader "Unlit/HelloWorld"
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 
-                // o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
                 //ingoring fog for now
                 UNITY_TRANSFER_FOG(o,o.vertex);
@@ -88,18 +88,12 @@ Shader "Unlit/HelloWorld"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
+                float4 colour = tex2D(_MainTex, i.uv);
                 
-                // sample the texture
-                // ignoring textures
-                // fixed4 col = tex2D(_MainTex, i.uv);
-
-                
-                // apply fog
                 //ignoring fog
                 // UNITY_APPLY_FOG(i.fogCoord, col);
-
-                // output blue
-                return float4(0,0,1,1);
+                
+                return colour;
             }
             ENDCG
         }

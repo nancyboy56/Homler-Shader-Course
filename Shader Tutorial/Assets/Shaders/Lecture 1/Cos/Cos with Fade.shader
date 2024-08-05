@@ -1,4 +1,4 @@
-Shader "Unlit/Cos Both Axis"
+Shader "Unlit/Cos Fade"
 {
 
     // input data
@@ -9,7 +9,10 @@ Shader "Unlit/Cos Both Axis"
         _Colour2("Colour 2", Color) = (1,1,1,1)
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _Scale("Scale", Float) = 2.0
+        _PatternScale("Pattern Scale", Float) = 2.0
+        _ZigScale("Zigzang Scale", Float) = 2.0
+        _CosCo("Zigzang coeffceint", Float) = 0.1
+        _TimeScale("Time Scale", Float) = 1
     }
 
     SubShader
@@ -36,7 +39,10 @@ Shader "Unlit/Cos Both Axis"
             float4 _Colour2;
             /*float _ColourStart;
             float _ColourEnd;*/
-            float _Scale;
+            float _PatternScale;
+            float _ZigScale;
+            float _CosCo;
+            float _TimeScale;
                             
             //automaticaally filled out by unity
             struct MeshData
@@ -89,11 +95,19 @@ Shader "Unlit/Cos Both Axis"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                float2 t = frac(i.uv.xy);
-                t = 0.5*cos(t * _Scale* TAU)+0.5;
-                //return float4(t,0,1);
+
+                // this is time supplied by unity!
+                // xyzw have different scales of time
+                // _Time.xyzw
+                // _Time.y is seconds
+                 float xOffset = _CosCo * cos(i.uv.x * TAU * _ZigScale);
+                //float t = frac(i.uv.y);
+                float t = 0.5 * cos((i.uv.y + xOffset + _Time.y * _TimeScale) * _PatternScale * TAU)+0.5;
+
+                // this is a fade use the y uv for fading up and down and multiple it
+               t *= 1- i.uv.y;
                 
-                float4 outColour = lerp(_Colour1, _Colour2, float4(t,0,1)) ;
+                float4 outColour = lerp(_Colour1, _Colour2, t);
                 return outColour;
 
                 

@@ -1,17 +1,14 @@
-Shader "Unlit/Texture Move"
+Shader "Unlit/Colour"
 {
 
     // input data
     Properties 
     {
-        // this is unity default texture. its 2D
-        //there are 3D textures and cube maps
-        //all work in diferent ways
         _MainTex ("Texture", 2D) = "white" {}
-        _TimeScale("Time Scale", float) = 0.1
+        _Colour("Colour", Color) = (1,1,1,1)
         
     }
-    
+
     SubShader
     {
        
@@ -35,14 +32,10 @@ Shader "Unlit/Texture Move"
             #include "UnityCG.cginc"
 
             //define variables
-
-            //sampler2D means 2D texture type
             sampler2D _MainTex;
-            float _TimeScale;
-
-            //this varaible is optional
-            // This has Tiling and offset information is in
             float4 _MainTex_ST;
+            
+            float4 _Colour;
             
             //automaticaally filled out by unity
             struct MeshData
@@ -86,15 +79,11 @@ Shader "Unlit/Texture Move"
                 Interpolators o;
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                
+                // o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
-                //this is optional
-                //this offset, scales with the texture
-                o.uv = TRANSFORM_TEX(v.uv0, _MainTex);
-                //can just do o.uv =v.uv but doesnt use the offset,scale
-                //if you dont use the default offset and scale values doesnt matter can just pass through uvs
-                o.uv.x += _Time.y * _TimeScale;
                 //ingoring fog for now
-                //UNITY_TRANSFER_FOG(o,o.vertex);
+                UNITY_TRANSFER_FOG(o,o.vertex);
                 
                 return o;
             }
@@ -104,10 +93,8 @@ Shader "Unlit/Texture Move"
             {
                 
                 // sample the texture
-                // input colour from texture
-                //the space we are working in is from 0 to 1
-                // this is also known as normalised corrdinates
-                fixed4 col = tex2D(_MainTex, i.uv);
+                // ignoring textures
+                // fixed4 col = tex2D(_MainTex, i.uv);
 
                 
                 // apply fog
@@ -115,7 +102,7 @@ Shader "Unlit/Texture Move"
                 // UNITY_APPLY_FOG(i.fogCoord, col);
 
                 // output white
-                return col;
+                return _Colour;
             }
             ENDCG
         }

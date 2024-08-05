@@ -1,4 +1,4 @@
-Shader "Unlit/UV Centre"
+Shader "Unlit/Radial"
 {
 
     // input data
@@ -136,8 +136,12 @@ Shader "Unlit/UV Centre"
                 float waveX = _xOffsetCo * cos((i.uv.x + _Time.y * _TimeScale) * _YScale * TAU)+0.5;*/
               //  t *= 1-i.uv.y;
                 //float4 colour = lerp(_Colour1, _Colour2, i.uv.y);
+
+                float2 uvCentre = i.uv * 2 -1;
+
+                float radialDistance = length(uvCentre);
                 
-              return float4(i.uv * 2 -1,0,1);
+              return float4(radialDistance.xxx,1);
                 //return wave;
          
             }

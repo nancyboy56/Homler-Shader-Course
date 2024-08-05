@@ -1,19 +1,16 @@
-Shader "Unlit/Cos with TAU"
+Shader "Unlit/Hello World"
 {
 
     // input data
     Properties 
     {
+        _MainTex ("Texture", 2D) = "white" {}
         
-        _Colour1("Colour 1", Color) = (1,1,1,1)
-        _Colour2("Colour 2", Color) = (1,1,1,1)
-        /*_ColourStart("Colour Start", Range(0,1)) = 0.0
-        _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _Scale("Scale", Float) = 2.0
     }
 
     SubShader
     {
+       
         Tags { "RenderType"="Opaque" }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -22,22 +19,21 @@ Shader "Unlit/Cos with TAU"
         Pass
         {
             CGPROGRAM
-            
+
+     
             #pragma vertex vert
             #pragma fragment frag
+            
+            // make fog work
+            #pragma multi_compile_fog
             
             //bulit in functions
             #include "UnityCG.cginc"
 
-            #define TAU 6.283185307179586476925287
-
             //define variables
-            float4 _Colour1;
-            float4 _Colour2;
-            /*float _ColourStart;
-            float _ColourEnd;*/
-            float _Scale;
-                            
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            
             //automaticaally filled out by unity
             struct MeshData
             {
@@ -54,51 +50,56 @@ Shader "Unlit/Cos with TAU"
                 float4 tangent: TANGENT;
 
                 //uv coordinates
-                float4 uv0 : TEXCOORD0;
+                float2 uv0 : TEXCOORD0;
+                
+                float4 uv1 : TEXCOORD1;
             };
             
             struct Interpolators
             {
                 //clip space postion of this vertex, between -1,1 for this particular position
                 float4 vertex : SV_POSITION;
-                float3 normal : TEXCOORD0;
-                float2 uv : TEXCOORD1;
+
+                float2 uv : TEXCOORD0;
+                float4 uv1 : TEXCOORD1;
+                float4 uv2 : TEXCOORD2;
+
+                // for fog
+                UNITY_FOG_COORDS(1)
+                
             };
 
-     
+            
             // vertex shader
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                
+                // o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
-                //scaling in vertex shader bc its faster
-               o.uv = v.uv0;
-               // o.uv = (v.uv0 + _Offset) * _Scale;
+                //ingoring fog for now
+                UNITY_TRANSFER_FOG(o,o.vertex);
                 
                 return o;
-            }
-
-            // Can give start and end points to lerps
-            float InverseLerp( float start, float end, float i)
-            {
-                return (i-start)/(end-start);
             }
             
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                float t = frac(i.uv.x);
-                t = 0.5*cos(t * _Scale* TAU)+0.5;
                 
-                
-                float4 outColour = lerp(_Colour1, _Colour2, t);
-                return outColour;
+                // sample the texture
+                // ignoring textures
+                // fixed4 col = tex2D(_MainTex, i.uv);
 
                 
-                
-                //return t;
+                // apply fog
+                //ignoring fog
+                // UNITY_APPLY_FOG(i.fogCoord, col);
+
+                // output blue
+                return float4(0,0,1,1);
             }
             ENDCG
         }

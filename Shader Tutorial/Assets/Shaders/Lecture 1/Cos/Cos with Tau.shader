@@ -1,4 +1,4 @@
-Shader "Unlit/Zigzang"
+Shader "Unlit/Cos TAU"
 {
 
     // input data
@@ -10,8 +10,6 @@ Shader "Unlit/Zigzang"
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
         _Scale("Scale", Float) = 2.0
-        _ZigScale("Zigzang Scale", Float) = 2.0
-        _CosCo("Zigzang coeffceint", Float) = 0.1
     }
 
     SubShader
@@ -39,8 +37,6 @@ Shader "Unlit/Zigzang"
             /*float _ColourStart;
             float _ColourEnd;*/
             float _Scale;
-            float _ZigScale;
-            float _CosCo;
                             
             //automaticaally filled out by unity
             struct MeshData
@@ -93,11 +89,9 @@ Shader "Unlit/Zigzang"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                 float xOffset = _CosCo * cos(i.uv.y*TAU*_ZigScale);
-                //float t = frac(i.uv.y);
-                float t = 0.5*cos((i.uv.x + xOffset) * _Scale* TAU)+0.5;
-
-               
+                float t = frac(i.uv.x);
+                t = 0.5*cos(t * _Scale* TAU)+0.5;
+                
                 
                 float4 outColour = lerp(_Colour1, _Colour2, t);
                 return outColour;

@@ -1,51 +1,26 @@
-Shader "Unlit/Ring Back Side"
+Shader "Unlit/Cos XY"
 {
 
     // input data
     Properties 
     {
         
-        _Colour1("Colour 1", Color) = (0,0,0,1)
+        _Colour1("Colour 1", Color) = (1,1,1,1)
         _Colour2("Colour 2", Color) = (1,1,1,1)
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _YScale("Y Axis Cos Scale", Float) = 2.0
-        _XOffsetScale("X Offset Axis Cos Scale", Float) = 2.0
-        _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.1
-        _TimeScale("Time Scale", Float) = 1
-        _Saturation("Colour Saturation ", Float) = 1
-        _FadeScale("Fade Scale", Range(0,1)) = 0.5
+        _Scale("Scale", Float) = 2.0
     }
 
     SubShader
     {
-        // when dealing with transparent you want to sent the render type to transparent
-        //also set render queue to transparent
-        // render type is mostly just for tagging like for post process effects
-        // render queue is the actual order that things are going ot be drawn in
-        Tags { 
-            "RenderType"="Transparent" 
-            "Queue"="Transparent"
-        }
+        Tags { "RenderType"="Opaque" }
         
         //you can set a LOD level of an object and it will pick different subshaders
         LOD 100
         
         Pass
         {
-            // this is the default
-            //back face culling
-            //Cull Back
-            
-            
-            // depth buffer
-            Zwrite Off
-            //Additive
-            Blend One One
-            
-            // multiply
-            //Blend DstColor Zero
-            
             CGPROGRAM
             
             #pragma vertex vert
@@ -61,12 +36,7 @@ Shader "Unlit/Ring Back Side"
             float4 _Colour2;
             /*float _ColourStart;
             float _ColourEnd;*/
-            float _YScale;
-            float _XOffsetScale;
-            float _xOffsetCo;
-            float _TimeScale;
-            float _FadeScale;
-            float _Saturation;
+            float _Scale;
                             
             //automaticaally filled out by unity
             struct MeshData
@@ -119,16 +89,11 @@ Shader "Unlit/Ring Back Side"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-
-                float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
-                //float t = frac(i.uv.y);
-                float t = 0.5 * cos((i.uv.y + xOffset + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
-
-                // this is a fade use the y uv for fading up and down and multiple it
-                t *= _FadeScale * (1- i.uv.y) * _Saturation;
-                t =saturate(t);
-                float4 outColour = lerp(_Colour1, _Colour2, t);
+                float2 t = frac(i.uv.xy);
+                t = 0.5*cos(t * _Scale* TAU)+0.5;
+                //return float4(t,0,1);
                 
+                float4 outColour = lerp(_Colour1, _Colour2, float4(t,0,1)) ;
                 return outColour;
 
                 

@@ -1,10 +1,17 @@
-Shader "Unlit/ShaderTemplate"
+Shader "Unlit/Texture Wave"
 {
 
     // input data
     Properties 
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        // "white" {} means what will be assigned if there is nothing assigned to it, the default
+        // "white", "black", "gray", "bump" (for normal maps)
+        _MainTex ("Main Texture", 2D) = "white" {}
+        _Pattern("Pattern Texture", 2D) = "white" {}
+        _YScale("Wave Amount", Range(0,10)) = 5
+        _xOffsetCo("Gradient Blend", Range(0,3)) = 0.6
+        _TimeScale("Movement Speed", Range(-0.15,0.15)) = 0.1
+        _WaveAmp("Wave Amplitude", Range(-1,5)) =0.1
         
     }
     
@@ -29,9 +36,22 @@ Shader "Unlit/ShaderTemplate"
             
             //bulit in functions
             #include "UnityCG.cginc"
-
+            
             //define variables
+             #define TAU 6.283185307179586476925287
+            //sampler2D means 2D texture type
             sampler2D _MainTex;
+            sampler2D _Pattern;
+             float _YScale;
+            
+            float _xOffsetCo;
+            float _TimeScale;
+            float _FadeScale;
+            float _Saturation;
+            float _WaveAmp;
+
+            //this varaible is optional
+            // This has Tiling and offset information is in
             float4 _MainTex_ST;
             
             //automaticaally filled out by unity
@@ -61,7 +81,7 @@ Shader "Unlit/ShaderTemplate"
                 float4 vertex : SV_POSITION;
 
                 float2 uv : TEXCOORD0;
-                float4 uv1 : TEXCOORD1;
+                float4 world : TEXCOORD1;
                 float4 uv2 : TEXCOORD2;
 
                 // for fog
@@ -69,18 +89,25 @@ Shader "Unlit/ShaderTemplate"
                 
             };
 
+            float GetWave(float2 coords)
+            {
+                  //float2 uvCentre = coords * 2 -1;
+
+                //float radialDistance = length(uvCentre);
+                float wave = _xOffsetCo * cos((coords + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
+                wave *= coords;
+                return wave;
+            }
             
             // vertex shader
             Interpolators vert (MeshData v)
             {
                 Interpolators o;
-                
+                o.world = mul(UNITY_MATRIX_M, float4 (v.vertex.xyz, 1) );
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                
-                // o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
-                //ingoring fog for now
-                UNITY_TRANSFER_FOG(o,o.vertex);
+            
+                o.uv = TRANSFORM_TEX(v.uv0, _MainTex);
                 
                 return o;
             }
@@ -88,18 +115,16 @@ Shader "Unlit/ShaderTemplate"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                
-                // sample the texture
-                // ignoring textures
-                // fixed4 col = tex2D(_MainTex, i.uv);
+                // we want to make the projection top down for the texture
+                float2 topDownProjection =i.world.xz;
+
+                //not using uv for corrdinates in texture but using worldspace
+                float4 grass = tex2D(_MainTex, topDownProjection);
+                float4 pattern = tex2D(_Pattern, i.uv);
+                float4 worldColours = float4(i.world.xyz, 1);
 
                 
-                // apply fog
-                //ignoring fog
-                // UNITY_APPLY_FOG(i.fogCoord, col);
-
-                // output white
-                return float4(1,1,1,1);
+                return GetWave(pattern);
             }
             ENDCG
         }

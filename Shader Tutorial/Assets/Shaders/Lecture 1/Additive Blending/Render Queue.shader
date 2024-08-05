@@ -1,29 +1,46 @@
-Shader "Unlit/Zigzang Animation"
+Shader "Unlit/Render Queue"
 {
 
     // input data
     Properties 
     {
         
-        _Colour1("Colour 1", Color) = (1,1,1,1)
+        _Colour1("Colour 1", Color) = (0,0,0,1)
         _Colour2("Colour 2", Color) = (1,1,1,1)
         /*_ColourStart("Colour Start", Range(0,1)) = 0.0
         _ColourEnd("Colour End", Range(0,1) ) = 1.0*/
-        _Scale("Scale", Float) = 2.0
-        _ZigScale("Zigzang Scale", Float) = 2.0
-        _CosCo("Zigzang coeffceint", Float) = 0.1
+        _YScale("Y Axis Cos Scale", Float) = 2.0
+        _XOffsetScale("X Offset Axis Cos Scale", Float) = 2.0
+        _xOffsetCo("X Offset Cos Coeffceint", Float) = 0.1
         _TimeScale("Time Scale", Float) = 1
+        _Saturation("Colour Saturation ", Float) = 1
+        _FadeScale("Fade Scale", Range(0,1)) = 0.5
     }
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        // when dealing with transparent you want to sent the render type to transparent
+        //also set render queue to transparent
+        // render type is mostly just for tagging like for post process effects
+        // render queue is the actual order that things are going ot be drawn in
+        Tags { 
+            "RenderType"="Transparent" 
+            "Queue"="Transparent"
+        }
         
         //you can set a LOD level of an object and it will pick different subshaders
         LOD 100
         
         Pass
         {
+            
+            Zwrite Off
+            //Additive
+            Blend One One
+            
+            // multiply
+            //Blend DstColor Zero
+            
             CGPROGRAM
             
             #pragma vertex vert
@@ -39,10 +56,12 @@ Shader "Unlit/Zigzang Animation"
             float4 _Colour2;
             /*float _ColourStart;
             float _ColourEnd;*/
-            float _Scale;
-            float _ZigScale;
-            float _CosCo;
+            float _YScale;
+            float _XOffsetScale;
+            float _xOffsetCo;
             float _TimeScale;
+            float _FadeScale;
+            float _Saturation;
                             
             //automaticaally filled out by unity
             struct MeshData
@@ -96,17 +115,15 @@ Shader "Unlit/Zigzang Animation"
             float4 frag (Interpolators i) : SV_Target
             {
 
-                // this is time supplied by unity!
-                // xyzw have different scales of time
-                // _Time.xyzw
-                // _Time.y is seconds
-                 float xOffset = _CosCo * cos(i.uv.y*TAU*_ZigScale);
+                float xOffset = _xOffsetCo * cos(i.uv.x * TAU * _XOffsetScale);
                 //float t = frac(i.uv.y);
-                float t = 0.5*cos((i.uv.x + xOffset+ (_Time.y*_TimeScale)) * _Scale* TAU)+0.5;
+                float t = 0.5 * cos((i.uv.y + xOffset + _Time.y * _TimeScale) * _YScale * TAU)+0.5;
 
-               
-                
+                // this is a fade use the y uv for fading up and down and multiple it
+                t *= _FadeScale * (1- i.uv.y) * _Saturation;
+                t =saturate(t);
                 float4 outColour = lerp(_Colour1, _Colour2, t);
+                
                 return outColour;
 
                 

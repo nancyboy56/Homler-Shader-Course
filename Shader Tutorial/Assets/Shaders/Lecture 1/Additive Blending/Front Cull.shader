@@ -1,4 +1,4 @@
-Shader "Unlit/Additive Depth"
+Shader "Unlit/Front Cull"
 {
 
     // input data
@@ -24,7 +24,8 @@ Shader "Unlit/Additive Depth"
         // render type is mostly just for tagging like for post process effects
         // render queue is the actual order that things are going ot be drawn in
         Tags { 
-            "RenderType"="Opaque" 
+            "RenderType"="Transparent" 
+            "Queue"="Transparent"
         }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -32,7 +33,12 @@ Shader "Unlit/Additive Depth"
         
         Pass
         {
+            // this is the default
+            //back face culling
+            //Cull Back
             
+            Cull Front
+            // depth buffer
             Zwrite Off
             //Additive
             Blend One One
