@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Solution Flash
-  m_Shader: {fileID: 4800000, guid: 1444b6d8ad7fc1944835f22a5e7a0854, type: 3}
+  m_Name: UV Centre 0
+  m_Shader: {fileID: 4800000, guid: 3285e5b5d2cce8d43a9e0c9a059a0885, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,15 +24,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e3b2a1c30f078ee4ba75024735c21d55, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _End: 0.8
-    - _Health: 0.103
-    - _Start: 0.2
-    m_Colors:
-    - _EndColour: {r: 0, g: 1, b: 0, a: 1}
-    - _StartColour: {r: 1, g: 0, b: 0, a: 1}
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []
