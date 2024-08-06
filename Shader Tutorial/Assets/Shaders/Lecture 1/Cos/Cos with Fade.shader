@@ -100,12 +100,12 @@ Shader "Unlit/Cos Fade"
                 // xyzw have different scales of time
                 // _Time.xyzw
                 // _Time.y is seconds
-                 float xOffset = _CosCo * cos(i.uv.x * TAU * _ZigScale);
+                float xOffset = _CosCo * cos(i.uv.x * TAU * _ZigScale);
                 //float t = frac(i.uv.y);
                 float t = 0.5 * cos((i.uv.y + xOffset + _Time.y * _TimeScale) * _PatternScale * TAU)+0.5;
 
                 // this is a fade use the y uv for fading up and down and multiple it
-               t *= 1- i.uv.y;
+                t *= 1- i.uv.y;
                 
                 float4 outColour = lerp(_Colour1, _Colour2, t);
                 return outColour;
