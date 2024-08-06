@@ -1,4 +1,4 @@
-Shader "Unlit/Colour Light"
+Shader "Unlit/Phong Light"
 {
 
     // input data
@@ -10,7 +10,6 @@ Shader "Unlit/Colour Light"
     
     SubShader
     {
-       
         Tags { "RenderType"="Opaque" }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -26,9 +25,6 @@ Shader "Unlit/Colour Light"
             // make fog work
             #pragma multi_compile_fog
             
-            
-            
-
             #include "UnityCG.cginc"
             
             //need to include unity lighting files
@@ -68,7 +64,7 @@ Shader "Unlit/Colour Light"
 
                 float2 uv : TEXCOORD0;
                 float3 normal : TEXCOORD1;
-                float4 uv2 : TEXCOORD2;
+                float3 world : TEXCOORD2;
 
                 // for fog
                 UNITY_FOG_COORDS(1)
@@ -85,6 +81,7 @@ Shader "Unlit/Colour Light"
                 
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.normal=UnityObjectToWorldNormal(v.normal);
+                o.world = mul(unity_ObjectToWorld, v.vertex);
                 //ingoring fog for now
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 
@@ -94,19 +91,16 @@ Shader "Unlit/Colour Light"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                float3 normal = i.normal;
-
-                // for _WorldSpaceLightPos0 if w = 0 then its direction lights
-                //if w = 1 then its other lights, then your going to get posiont not direction
-                //base pass is always going to be a directional light
-                //if you want to do it "properly" you have another pass for each additional light source
-                // shows actual direction of light source
+                float3 normal =i.normal;
                 float3  light = _WorldSpaceLightPos0.xyz;
-
-                // can use max() or saturate both get u into the range of 0 and 1
                 float3 diffuse = saturate(dot(normal, light)) *_LightColor0.xyz;
                 
-                return float4(diffuse, 1);
+                //specular light
+                float3 view = normalize(_WorldSpaceCameraPos - i.world);
+                float3 reflection = reflect(-light, normal);
+                float3 specular = saturate(dot(view, reflection));
+                
+                return float4(specular, 1);
             }
             ENDCG
         }

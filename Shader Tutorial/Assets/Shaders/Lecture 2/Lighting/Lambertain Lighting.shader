@@ -104,7 +104,8 @@ Shader "Unlit/Lamb"
                 float3  light = _WorldSpaceLightPos0.xyz;
 
                 // can use max() or saturate both get u into the range of 0 and 1
-                float diffuse = saturate(dot(normal, light));
+                //the lambertain shadering is pretty much a mask
+                float diffuse = saturate(dot(normal, light) );
                 
                 return float4(diffuse.xxx, 1);
             }
