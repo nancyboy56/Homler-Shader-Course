@@ -117,11 +117,21 @@ Shader "Unlit/Border"
                 float healthSDF = distance(coords, lineCoords) *2 -1;
                 
                clip(-healthSDF);
-
+                
                 float borderSDF = healthSDF +_Border;
-
-                float borderMask =step(0,- borderSDF);
-
+                
+                 //fragament shader width
+                //scrren space partial derivative
+                //the rate of change
+                //fwidth() is an approximation
+                //ddx() and ddy() are more accurate
+                //length(float2(ddx(borderSDF), ddy(borderSDF))) this is more accurate
+                // more expeneisve but most of the time doesnt matter
+                float pd = fwidth(borderSDF);
+                
+                float borderMask = 1-saturate(borderSDF / pd);
+                    //return borderMask;
+               
                 
                 //return float4(borderMask.xxx,1);
                 
