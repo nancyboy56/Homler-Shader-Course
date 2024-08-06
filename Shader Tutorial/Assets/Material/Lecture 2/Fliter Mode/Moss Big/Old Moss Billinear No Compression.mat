@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bilinear Normal Quality
+  m_Name: Old Moss Billinear No Compression
   m_Shader: {fileID: 4800000, guid: fe1b073faecf08a4397df27054e237ed, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 0794c03dfdf1617488cbcc5f82cc04ba, type: 3}
+        m_Texture: {fileID: 2800000, guid: a5e76a417cba1234d9ea32fac8f6784c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
