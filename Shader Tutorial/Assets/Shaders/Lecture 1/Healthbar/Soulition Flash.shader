@@ -1,24 +1,21 @@
-Shader "Unlit/Health Texture"
+Shader "Unlit/Solution Flash"
 {
 
     // input data
     Properties 
     {
-        //get rid of scale and offset
-        [NoScaleOffset]_MainTex ("Texture", 2D) = "black" {}
+        _MainTex ("Texture", 2D) = "black" {}
         _StartColour("Health Colour", Color) = (1,0,0,1)
         _EndColour("Health Colour End", Color) =  (0,1,0,1)
         _Health("Health Percentage", Range(0,1)) = 0.1 
         _Start("Start Point", Range(0,1)) = 0.2
         _End("End Point", Range(0,1)) = 0.8
-        _Flash("Flash", Float) =5
         }
-        
     
     SubShader
     {
-       
-        Tags { "RenderType"="Transparent" 
+        Tags { 
+            "RenderType"="Transparent" 
             "Queue"="Transparent" }
         
         //you can set a LOD level of an object and it will pick different subshaders
@@ -26,10 +23,11 @@ Shader "Unlit/Health Texture"
         
         Pass
         {
+            ZWrite Off
             Blend SrcAlpha OneMinusSrcAlpha
+            
             CGPROGRAM
-
-     
+            
             #pragma vertex vert
             #pragma fragment frag
             
@@ -40,7 +38,6 @@ Shader "Unlit/Health Texture"
             #include "UnityCG.cginc"
 
             //define variables
-            #define TAU 6.283185307179586476925287
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _StartColour;
@@ -48,7 +45,6 @@ Shader "Unlit/Health Texture"
             float _Health;
             float _Start;
             float _End;
-            float _Flash;
             
             //automaticaally filled out by unity
             struct MeshData
@@ -89,10 +85,6 @@ Shader "Unlit/Health Texture"
             {
                 return (i-start)/(end-start);
             }
-            float4 Remap(float4 In, float2 InMinMax, float2 OutMinMax, out float4 Out)
-            {
-                return OutMinMax.x + (In - InMinMax.x) * (OutMinMax.y - OutMinMax.x) / (InMinMax.y - InMinMax.x);
-            }
             
             // vertex shader
             Interpolators vert (MeshData v)
@@ -102,11 +94,11 @@ Shader "Unlit/Health Texture"
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 //o.normal = UnityObjectToWorldNormal(v.normals);
                 
-                o.uv = TRANSFORM_TEX(v.uv0, _MainTex);
+                //o.uv = TRANSFORM_TEX(v.uv0, _MainTex);
 
                 //ingoring fog for now
                 UNITY_TRANSFER_FOG(o,o.vertex);
-               // o.uv = v.uv0; 
+                o.uv = v.uv0; 
                // o.uv = v.uv0; 
                 return o;
             }
@@ -114,32 +106,27 @@ Shader "Unlit/Health Texture"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                
-                // sample the texture
-                // ignoring textures
-                float4 bar = tex2D(_MainTex, float2(_Health, i.uv.y));
+                // this was my new solution, also freya's solution
+                float3 colour = tex2D(_MainTex, float2 (_Health, i.uv.y));
+                float mask = _Health> i.uv.x;
 
+                // the plus 1 means that the health bar will retain its orgainal colour
+                // as 1 x A is still A
                 
-                // apply fog
-                //ignoring fog
-                // UNITY_APPLY_FOG(i.fogCoord, col);
 
-                // output white
-                //float t = InverseLerp(_Start, _End, _Health);
-                // float4 colour = float4(1,1,1,0);
-                 float4 colour = bar * (i.uv.x < _Health);
-                 //float t = 0.5 * cos((i.uv.y +  + _Time.y * 0.5) * 5 * TAU)+0.5;
-                float wave = 0.5* cos(_Time.y *_Flash)+0.5;
+                // if you want to use an if
+                // if is expensive if your output of it changes a lot
+                //if its mostly the same value then its not that expensive (?)
+                // like here the _Health value is the same across the entire render
+                if(_Health < 0.2)
+                {
+                    float flash = cos(_Time.y *4)* 0.5 + 1;
+                    colour *= flash;
+                }
                 
-                 //float pluse = InverseLerp(1,0,);
-                
-                //Remap(i.uv.x, _Start, )
-                //clamp()
-                //clamp()
-                float alpha = colour.a * (_Health >_Start ) + wave * (_Health<_Start && colour.a == 1);
-                alpha = clamp(alpha, 0,1);
-                colour =float4(colour.rgb, alpha);
-                return colour;
+
+                // multipling by a vector will not change its hue until you go outside of the 0 to 1 range
+                return float4(colour* mask, 1);
             }
             ENDCG
         }

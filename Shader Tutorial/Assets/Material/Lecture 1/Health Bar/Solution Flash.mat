@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Texture
-  m_Shader: {fileID: 4800000, guid: 7c92c7eccb9c6204a90c4c514fc295f5, type: 3}
+  m_Name: Solution Flash
+  m_Shader: {fileID: 4800000, guid: f3fb1d80a5cf91d4988f6b2a6aca4d6b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,8 +30,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _End: 0.8
-    - _Flash: 9.8
-    - _Health: 0.134
+    - _Health: 1
     - _Start: 0.2
     m_Colors:
     - _EndColour: {r: 0, g: 1, b: 0, a: 1}
