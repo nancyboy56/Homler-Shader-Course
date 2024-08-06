@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Anti Aliasing
-  m_Shader: {fileID: 4800000, guid: 7281c590ae71eb7429f457c30b740b5e, type: 3}
+  m_Name: Light Direction
+  m_Shader: {fileID: 4800000, guid: 3db710d1e20f274469471ddba550a8ce, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -28,13 +28,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _Border: 0.2
-    - _End: 0.8
-    - _Health: 0.1
-    - _Scale: 10
-    - _Start: 0.2
-    m_Colors:
-    - _EndColour: {r: 0, g: 1, b: 0, a: 1}
-    - _StartColour: {r: 1, g: 0, b: 0, a: 1}
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []
