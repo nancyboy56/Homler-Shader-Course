@@ -1,4 +1,4 @@
-Shader "Unlit/Border SDF"
+Shader "Unlit/Border"
 {
 
     // input data
@@ -119,7 +119,11 @@ Shader "Unlit/Border SDF"
                clip(-healthSDF);
 
                 float borderSDF = healthSDF +_Border;
-                return float4(borderSDF.xxx,1);
+
+                float borderMask =step(0,borderSDF);
+
+                
+                return float4(borderMask.xxx,1);
                 
                 float3 colour = tex2D(_MainTex, float2 (_Health, i.uv.y));
                 float mask = _Health> i.uv.x;
