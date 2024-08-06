@@ -1,4 +1,4 @@
-Shader "Unlit/Direction"
+Shader "Unlit/Lamb"
 {
 
     // input data
@@ -100,13 +100,13 @@ Shader "Unlit/Direction"
                 //if w = 1 then its other lights, then your going to get posiont not direction
                 //base pass is always going to be a directional light
                 //if you want to do it "properly" you have another pass for each additional light source
+                // shows actual direction of light source
                 float3  light = _WorldSpaceLightPos0.xyz;
-                float4 colour = tex2D(_MainTex, i.uv);
+
+                // can use max() or saturate both get u into the range of 0 and 1
+                float diffuse = saturate(dot(normal, light));
                 
-                //ignoring fog
-                // UNITY_APPLY_FOG(i.fogCoord, col);
-                
-                return float4(light, 1);
+                return float4(diffuse.xxx, 1);
             }
             ENDCG
         }
