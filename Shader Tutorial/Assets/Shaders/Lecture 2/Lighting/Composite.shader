@@ -1,4 +1,4 @@
-Shader "Unlit/Spec Colour"
+Shader "Unlit/Composite"
 {
 
     // input data
@@ -113,7 +113,7 @@ Shader "Unlit/Spec Colour"
                 // somtimes called the specular exponent
                 specular = pow(specular, specularExponent);
                 specular *= _LightColor0.xyz;
-                return float4(specular, 1);
+                return float4(diffuse + specular, 1);
             }
             ENDCG
         }
