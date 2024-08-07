@@ -1,11 +1,11 @@
-Shader "Unlit/Blinn Phong Cull"
+Shader "Unlit/Gloss Exponental"
 {
 
     // input data
     Properties 
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Gloss("Gloss Amount", Float) =1
+        _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         
     }
     
@@ -107,8 +107,11 @@ Shader "Unlit/Blinn Phong Cull"
                 // Blinn Phong
                 float3 specular = saturate(dot(halfVector, normal)) * (lambert >0);
 
+                // this might be expensive to do in real time
+                // might want to do it on the c# end
+                float specularExponent = exp2(_Gloss * 6 ) + 2;
                 // somtimes called the specular exponent
-                specular = pow(specular, _Gloss);
+                specular = pow(specular, specularExponent);
                 return float4(specular, 1);
             }
             ENDCG
