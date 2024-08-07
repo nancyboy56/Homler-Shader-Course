@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fresnel Frac
-  m_Shader: {fileID: 4800000, guid: e23bb42e23d7510458844fa1fa3bc3b1, type: 3}
+  m_Name: Fresnel Outline
+  m_Shader: {fileID: 4800000, guid: 249e3dc29ade132418082dacee2038a0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,7 +30,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _Gloss: 0.5
+    - _Outline: 0.7
     - _TimeScale: 2
     m_Colors:
-    - _Colour: {r: 1, g: 0, b: 0.519052, a: 1}
+    - _Colour: {r: 1, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []

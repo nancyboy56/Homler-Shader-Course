@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fresnel Frac
-  m_Shader: {fileID: 4800000, guid: e23bb42e23d7510458844fa1fa3bc3b1, type: 3}
+  m_Name: Fresnel Cos
+  m_Shader: {fileID: 4800000, guid: 732abf3e75b313a4cb547ef466cbc547, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -32,5 +32,5 @@ Material:
     - _Gloss: 0.5
     - _TimeScale: 2
     m_Colors:
-    - _Colour: {r: 1, g: 0, b: 0.519052, a: 1}
+    - _Colour: {r: 1, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
