@@ -1,4 +1,4 @@
-Shader "Unlit/Inverted Fresnel"
+Shader "Unlit/Fresnel Light"
 {
 
     // input data
@@ -118,9 +118,9 @@ Shader "Unlit/Inverted Fresnel"
                 specular *= _LightColor0.xyz;
 
                 float fresnel = 1- dot(view, normal );
-                return fresnel;
+                //return fresnel;
                 
-                return float4(diffuse * _Colour + specular, 1);
+                return float4(diffuse * _Colour + specular +fresnel, 1);
             }
             ENDCG
         }

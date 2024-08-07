@@ -1,4 +1,4 @@
-Shader "Unlit/Inverted Fresnel"
+Shader "Unlit/Fresnel Frac"
 {
 
     // input data
@@ -7,6 +7,7 @@ Shader "Unlit/Inverted Fresnel"
         _MainTex ("Texture", 2D) = "white" {}
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
+        _TimeScale("Time Scale", Range (0,5)) =2
         
     }
     
@@ -39,6 +40,7 @@ Shader "Unlit/Inverted Fresnel"
             float4 _MainTex_ST;
             float _Gloss;
             float4 _Colour;
+            float _TimeScale;
             
             //automaticaally filled out by unity
             struct MeshData
@@ -117,10 +119,10 @@ Shader "Unlit/Inverted Fresnel"
                 specular = pow(specular, specularExponent) * _Gloss;
                 specular *= _LightColor0.xyz;
 
-                float fresnel = 1- dot(view, normal );
-                return fresnel;
+                float fresnel = (1- dot(view, normal )) * frac(_Time.y*_TimeScale);
+                //return fresnel;
                 
-                return float4(diffuse * _Colour + specular, 1);
+                return float4(diffuse * _Colour + specular +fresnel, 1);
             }
             ENDCG
         }
