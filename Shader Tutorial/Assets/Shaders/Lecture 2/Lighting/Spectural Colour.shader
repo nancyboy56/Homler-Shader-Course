@@ -112,7 +112,7 @@ Shader "Unlit/Gloss Exponental"
                 float specularExponent = exp2(_Gloss * 6 ) + 2;
                 // somtimes called the specular exponent
                 specular = pow(specular, specularExponent);
-               
+                specular *= _LightColor0.xyz;
                 return float4(specular, 1);
             }
             ENDCG
