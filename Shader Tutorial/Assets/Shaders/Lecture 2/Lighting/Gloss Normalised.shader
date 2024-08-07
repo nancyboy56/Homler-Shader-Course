@@ -1,4 +1,4 @@
-Shader "Unlit/Gloss"
+Shader "Unlit/Gloss Normalised"
 {
 
     // input data
@@ -93,7 +93,8 @@ Shader "Unlit/Gloss"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                float3 normal =i.normal;
+                // neew to normalize the normal between vetrecies bc at the moment they are just being lerped
+                float3 normal =normalize(i.normal);
                 float3  light = _WorldSpaceLightPos0.xyz;
                 float3 diffuse = saturate(dot(normal, light)) *_LightColor0.xyz;
                 
