@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gloss Normalised
-  m_Shader: {fileID: 4800000, guid: cc0d37512e74ff34783631105415c598, type: 3}
+  m_Name: Blinn Phong
+  m_Shader: {fileID: 4800000, guid: 876fc760e2f5e4643abab47aa9692fcb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,6 +29,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Gloss: 1
+    - _Gloss: 46.3
     m_Colors: []
   m_BuildTextureStacks: []
