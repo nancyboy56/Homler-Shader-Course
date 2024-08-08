@@ -30,7 +30,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Gloss: 0.5
-    - _Outline: 0.7
+    - _Outline: 0.65
     - _TimeScale: 2
     m_Colors:
     - _Colour: {r: 1, g: 1, b: 0, a: 1}
