@@ -74,38 +74,41 @@ float4 frag (Interpolators i) : SV_Target
     #ifdef USE_LIGHTING
         // this defined its going to compile this code
 
-    // need to normalize the normal between vetrecies bc at the moment they are just being lerped
-    float3 normal =normalize(i.normal);
+        // need to normalize the normal between vetrecies bc at the moment they are just being lerped
+        float3 normal =normalize(i.normal);
 
-    // direction of whatever light we have
-    // but its not normalised
-    float3  light = normalize(UnityWorldSpaceLightDir(i.world));
+        // direction of whatever light we have
+        // but its not normalised
+        float3  light = normalize(UnityWorldSpaceLightDir(i.world));
 
-    // how light falls off the further u get aay from it
-    float attenuation = LIGHT_ATTENUATION(i);
-    float3 lambert = saturate(dot(normal, light));
-    float3 diffuse = lambert * attenuation *_LightColor0.xyz;
-    
-    //specular light
-    float3 view = normalize(_WorldSpaceCameraPos - i.world);
-    //  float3 reflection = reflect(-light, normal);
-    float3 halfVector = normalize(light + view);
+        // how light falls off the further u get aay from it
+        float attenuation = LIGHT_ATTENUATION(i);
+        float3 lambert = saturate(dot(normal, light));
+        float3 diffuse = lambert * attenuation *_LightColor0.xyz;
 
-    // Blinn Phong
-    float3 specular = saturate(dot(halfVector, normal)) * (lambert >0);
+        //specular light
+        float3 view = normalize(_WorldSpaceCameraPos - i.world);
+        //  float3 reflection = reflect(-light, normal);
+        float3 halfVector = normalize(light + view);
 
-    // this might be expensive to do in real time
-    // might want to do it on the c# end
-    float specularExponent = exp2(_Gloss * 6 ) + 2;
-    // somtimes called the specular exponent
-    // a bad estimation at energy consrvation
-    specular = pow(specular, specularExponent) * _Gloss * attenuation;
-    specular *= _LightColor0.xyz;
-    return float4(diffuse * _Colour + specular, 1);
+        // Blinn Phong
+        float3 specular = saturate(dot(halfVector, normal)) * (lambert >0);
+
+        // this might be expensive to do in real time
+        // might want to do it on the c# end
+        float specularExponent = exp2(_Gloss * 6 ) + 2;
+        // somtimes called the specular exponent
+        // a bad estimation at energy consrvation
+        specular = pow(specular, specularExponent) * _Gloss * attenuation;
+        specular *= _LightColor0.xyz;
+        return float4(diffuse * _Colour + specular, 1);
     #else
     // if not defined going to compile this code
-
-        return _Colour;
+        #if IS_IN_BASE_PASS
+            return _Colour;
+        #else
+            return 0;
+        #endif
     #endif
     
 }
