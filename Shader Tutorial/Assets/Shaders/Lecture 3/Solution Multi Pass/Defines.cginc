@@ -104,7 +104,7 @@ float4 frag (Interpolators i) : SV_Target
         return float4(diffuse * _Colour + specular, 1);
     #else
     // if not defined going to compile this code
-        #if IS_IN_BASE_PASS
+        #ifdef IS_IN_BASE_PASS
             return _Colour;
         #else
             return 0;
