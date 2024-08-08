@@ -21,7 +21,7 @@ Shader "Unlit/Multi Pass"
         Pass
         {
             Tags {
-                "LightMode" = "Always"
+                "LightMode" = "ForwardBase"
                  "PassFlags" = "OnlyDirectional"
             }
             CGPROGRAM
@@ -100,7 +100,7 @@ Shader "Unlit/Multi Pass"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                return (1,0,0.5,1);
+                
                 // neew to normalize the normal between vetrecies bc at the moment they are just being lerped
                 float3 normal =normalize(i.normal);
                 float3  light = normalize(_WorldSpaceLightPos0.xyz);
@@ -127,10 +127,10 @@ Shader "Unlit/Multi Pass"
 
         Pass
         {
-             //Blend One One
-             /*Tags {
-                "LightMode" = "FowardAdd"
-            }*/
+             Blend One One
+             Tags {
+                "LightMode" = "ForwardAdd"
+            }
             CGPROGRAM
             
             #pragma vertex vert
@@ -210,7 +210,7 @@ Shader "Unlit/Multi Pass"
             {
                 // neew to normalize the normal between vetrecies bc at the moment they are just being lerped
                 float3 normal =normalize(i.normal);
-                float3  light = _WorldSpaceLightPos0.xyz ;
+                float3  light = _WorldSpaceLightPos0.xyz -i.world ;
                 float3 lambert = saturate(dot(normal, light));
                 float3 diffuse = lambert *_LightColor0.xyz;
                 

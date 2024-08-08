@@ -2,6 +2,7 @@
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
+
 #define TAU 6.283185307179586476925287
 sampler2D _MainTex;
 float4 _MainTex_ST;
@@ -39,6 +40,10 @@ struct Interpolators
 
     // for fog
     UNITY_FOG_COORDS(1)
+
+    // this is a unity macro to handle light
+    //since we ar using texcoords0,1,2 we give it 3 and 4
+    LIGHTING_COORDS(3,4)
     
 };
 
@@ -55,7 +60,9 @@ Interpolators vert (MeshData v)
     o.world = mul(unity_ObjectToWorld, v.vertex);
     //ingoring fog for now
     UNITY_TRANSFER_FOG(o,o.vertex);
-    
+
+    // this is about lighting information
+    TRANSFER_VERTEX_TO_FRAGMENT(o);
     return o;
 }
 
@@ -64,7 +71,10 @@ float4 frag (Interpolators i) : SV_Target
 {
     // neew to normalize the normal between vetrecies bc at the moment they are just being lerped
     float3 normal =normalize(i.normal);
-    float3  light = _WorldSpaceLightPos0.xyz;
+
+    // direction of whatever light we have
+    // but its not normalised
+    float3  light = normalize(UnityWorldSpaceLightDir(i.world));
     float3 lambert = saturate(dot(normal, light));
     float3 diffuse = lambert *_LightColor0.xyz;
     

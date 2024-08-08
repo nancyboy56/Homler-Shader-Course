@@ -12,18 +12,33 @@ Shader "Unlit/Solution Pass"
     
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "Queue"="Geometry" }
         
-        //you can set a LOD level of an object and it will pick different subshaders
-        LOD 100
         
+        // base pass
         Pass
         {
+            Tags { "LightMode" = "ForwardBase" }
             CGPROGRAM
             
             #pragma vertex vert
             #pragma fragment frag
+            #define IS_IN_BASE_PASS
+            #include "MyLighting.cginc"
+            ENDCG
+        }
+
+        // Add pass
+        Pass
+        {
+            Tags {"LightMode" = "ForwardAdd" }
             
+            Blend One One //scr + dst additive
+            CGPROGRAM
+            
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdadd
             #include "MyLighting.cginc"
             ENDCG
         }
