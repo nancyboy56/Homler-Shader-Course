@@ -21,7 +21,7 @@ Shader "Unlit/Multi Pass"
         Pass
         {
             Tags {
-                "LightMode" = "FowardBase"
+                "LightMode" = "Always"
                  "PassFlags" = "OnlyDirectional"
             }
             CGPROGRAM
@@ -125,12 +125,12 @@ Shader "Unlit/Multi Pass"
             ENDCG
         }
 
-        /*Pass
+        Pass
         {
              //Blend One One
-             Tags {
-                "LightMode" = "ForwardAdd"
-            }
+             /*Tags {
+                "LightMode" = "FowardAdd"
+            }*/
             CGPROGRAM
             
             #pragma vertex vert
@@ -210,7 +210,7 @@ Shader "Unlit/Multi Pass"
             {
                 // neew to normalize the normal between vetrecies bc at the moment they are just being lerped
                 float3 normal =normalize(i.normal);
-                float3  light = _WorldSpaceLightPos0.xyz -i.world;
+                float3  light = _WorldSpaceLightPos0.xyz ;
                 float3 lambert = saturate(dot(normal, light));
                 float3 diffuse = lambert *_LightColor0.xyz;
                 
@@ -226,10 +226,12 @@ Shader "Unlit/Multi Pass"
                
                 specular = pow(specular, specularExponent) * _Gloss;
                 specular *= _LightColor0.xyz;
+                //return float4(0,0,0,0);
                 return float4(diffuse * _Colour + specular,1);
+                return (0,0,0,0);
                 return float4(diffuse, 1);
             }
             ENDCG
-        }*/
+        }
     }
 }
