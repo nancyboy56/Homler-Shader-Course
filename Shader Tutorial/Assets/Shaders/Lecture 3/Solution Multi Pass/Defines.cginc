@@ -69,7 +69,12 @@ Interpolators vert (MeshData v)
 //fragement shader
 float4 frag (Interpolators i) : SV_Target
 {
-    // neew to normalize the normal between vetrecies bc at the moment they are just being lerped
+    // if defined then use lighting
+    //instead of brackets
+    #ifdef USE_LIGHTING
+        // this defined its going to compile this code
+
+    // need to normalize the normal between vetrecies bc at the moment they are just being lerped
     float3 normal =normalize(i.normal);
 
     // direction of whatever light we have
@@ -97,4 +102,10 @@ float4 frag (Interpolators i) : SV_Target
     specular = pow(specular, specularExponent) * _Gloss * attenuation;
     specular *= _LightColor0.xyz;
     return float4(diffuse * _Colour + specular, 1);
+    #else
+    // if not defined going to compile this code
+
+        return _Colour;
+    #endif
+    
 }
