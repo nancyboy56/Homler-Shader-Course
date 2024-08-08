@@ -75,8 +75,11 @@ float4 frag (Interpolators i) : SV_Target
     // direction of whatever light we have
     // but its not normalised
     float3  light = normalize(UnityWorldSpaceLightDir(i.world));
+
+    // how light falls off the further u get aay from it
+    float attenuation = LIGHT_ATTENUATION(i);
     float3 lambert = saturate(dot(normal, light));
-    float3 diffuse = lambert *_LightColor0.xyz;
+    float3 diffuse = lambert * attenuation *_LightColor0.xyz;
     
     //specular light
     float3 view = normalize(_WorldSpaceCameraPos - i.world);
@@ -91,7 +94,7 @@ float4 frag (Interpolators i) : SV_Target
     float specularExponent = exp2(_Gloss * 6 ) + 2;
     // somtimes called the specular exponent
     // a bad estimation at energy consrvation
-    specular = pow(specular, specularExponent) * _Gloss;
+    specular = pow(specular, specularExponent) * _Gloss * attenuation;
     specular *= _LightColor0.xyz;
     return float4(diffuse * _Colour + specular, 1);
 }
