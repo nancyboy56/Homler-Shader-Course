@@ -88,11 +88,17 @@ float4 frag (Interpolators i) : SV_Target
     float3 albedo = tex2D(_Albedo, i.uv);
 
     float3 surface =  albedo * _Colour.rgb;
-    #ifdef IS_IN_BASE_PASS
-        return float4(UnpackNormal(tex2D(_Normals, i.uv)) *0.5 +0.5, 0);
-    #else
-        return 0;
-    #endif
+    float3 tangentNormal = float4(UnpackNormal(tex2D(_Normals, i.uv)) *0.5 +0.5, 0);
+
+    float3x3 mtxTangToWorld = {
+        i.tangent.x, i.bitangent.x, i.normal.x,
+        i.tangent.y, i.bitangent.y, i.normal.y,
+        i.tangent.z, i.bitangent.z, i.normal.z,
+    };
+
+    // world space normal    
+    float3 normal = mul(mtxTangToWorld, tangentNormal);
+    
    
     // if defined then use lighting
     //instead of brackets
@@ -100,7 +106,7 @@ float4 frag (Interpolators i) : SV_Target
         // this defined its going to compile this code
 
         // need to normalize the normal between vetrecies bc at the moment they are just being lerped
-        float3 normal =normalize(i.normal);
+        //float3 normal =normalize(i.normal);
 
         // direction of whatever light we have
         // but its not normalised
