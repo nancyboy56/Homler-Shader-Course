@@ -29,7 +29,7 @@ Shader "Unlit/Normal Wave"
             #pragma vertex vert
             #pragma fragment frag
             #define IS_IN_BASE_PASS
-            #include "Height Map.cginc"
+            #include "Wave.cginc"
             ENDCG
         }
 
@@ -44,7 +44,7 @@ Shader "Unlit/Normal Wave"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdadd
-            #include "Height Map.cginc"
+            #include "Wave.cginc"
             ENDCG
         }
     }

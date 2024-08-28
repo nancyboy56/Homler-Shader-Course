@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 3abdaa566263d2348937152e3f351d76, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Height:
@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normals:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 25d4414c805bf4546836363bc603d984, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -40,5 +40,5 @@ Material:
     - _Gloss: 0.5
     - _Strength: 1
     m_Colors:
-    - _Colour: {r: 1, g: 1, b: 0, a: 1}
+    - _Colour: {r: 0.5471698, g: 0.30791506, b: 0.15176219, a: 1}
   m_BuildTextureStacks: []
