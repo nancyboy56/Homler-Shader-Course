@@ -11,6 +11,9 @@ float _Gloss;
 float4 _Colour;
 sampler2D _Normals;
 float _Strength;
+float _TimeScale;
+float _xOffsetCo;
+float _YScale;
 //float4 _Normals_ST;
 
 
@@ -63,7 +66,7 @@ struct Interpolators
 Interpolators vert (MeshData v)
 {
     Interpolators o;
-    v.vertex.y += cos (v.uv.x + _Time.y ) *0.05;
+    v.vertex.xyz += v.normal * _xOffsetCo * cos((v.uv.x + _Time.y * _TimeScale) * _YScale * TAU);
     o.vertex = UnityObjectToClipPos(v.vertex);
     
     o.uv = TRANSFORM_TEX(v.uv, _Albedo);

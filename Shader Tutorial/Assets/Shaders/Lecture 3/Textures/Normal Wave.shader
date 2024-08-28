@@ -14,7 +14,10 @@ Shader "Unlit/Height"
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
         _Strength("Normal Intensity", Range(0,10)) =1
-        _
+        _YScale("Wave Amount", Range(-10,10)) = 0.1
+        _xOffsetCo("Wave Height", Range(0,2)) = 0.6
+        _TimeScale("Movement Speed", Range(-1,1)) = 0.1
+       
     }
     
     SubShader
@@ -30,7 +33,7 @@ Shader "Unlit/Height"
             #pragma vertex vert
             #pragma fragment frag
             #define IS_IN_BASE_PASS
-            #include "Height.cginc"
+            #include "Normal Wave.cginc"
             ENDCG
         }
 
@@ -45,7 +48,7 @@ Shader "Unlit/Height"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdadd
-            #include "Height.cginc"
+            #include "Normal Wave.cginc"
             ENDCG
         }
     }
