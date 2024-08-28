@@ -9,7 +9,7 @@ Shader "Unlit/Normal Maps"
         // if you want it to look like its flat you need to set value to bump
         // short for bump map
         // bump map is an outdated turn from normal maps
-        _Normals("Normal", 2D) ="bump" {}
+        [NoScaleOffset]_Normals("Normal", 2D) ="bump" {}
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
         

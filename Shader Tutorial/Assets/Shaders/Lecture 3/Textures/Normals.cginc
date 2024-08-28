@@ -9,7 +9,7 @@ float4 _Albedo_ST;
 float _Gloss;
 float4 _Colour;
 sampler2D _Normals;
-float4 _Normals_ST;
+//float4 _Normals_ST;
 
 
 struct MeshData
