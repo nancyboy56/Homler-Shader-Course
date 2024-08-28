@@ -89,7 +89,7 @@ float4 frag (Interpolators i) : SV_Target
 
     float3 surface =  albedo * _Colour.rgb;
 
-    return tex2D(_Normals, i.uv);
+    return float4(UnpackNormal(tex2D(_Normals, i.uv)), 1);
     // if defined then use lighting
     //instead of brackets
     #ifdef USE_LIGHTING

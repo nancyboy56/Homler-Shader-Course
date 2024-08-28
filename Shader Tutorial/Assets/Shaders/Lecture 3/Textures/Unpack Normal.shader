@@ -1,4 +1,4 @@
-Shader "Unlit/Normal Maps 1"
+Shader "Unlit/Unpack"
 {
 
     // input data
@@ -27,7 +27,7 @@ Shader "Unlit/Normal Maps 1"
             #pragma vertex vert
             #pragma fragment frag
             #define IS_IN_BASE_PASS
-            #include "Normals.cginc"
+            #include "Unpack Normal.cginc"
             ENDCG
         }
 
@@ -42,7 +42,7 @@ Shader "Unlit/Normal Maps 1"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdadd
-            #include "Normals.cginc"
+            #include "Unpack Normal.cginc"
             ENDCG
         }
     }
