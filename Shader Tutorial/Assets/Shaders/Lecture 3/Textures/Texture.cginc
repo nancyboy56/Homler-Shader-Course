@@ -71,7 +71,7 @@ float4 frag (Interpolators i) : SV_Target
 {
     float3 albedo = tex2D(_Albedo, i.uv);
 
-    float3 texture =  albedo * _Colour.rgb; 
+    float3 surface =  albedo * _Colour.rgb; 
     // if defined then use lighting
     //instead of brackets
     #ifdef USE_LIGHTING
@@ -104,11 +104,11 @@ float4 frag (Interpolators i) : SV_Target
         // a bad estimation at energy consrvation
         specular = pow(specular, specularExponent) * _Gloss * attenuation;
         specular *= _LightColor0.xyz;
-        return float4(diffuse * texture + specular, 1);
+        return float4(diffuse * surface + specular, 1);
     #else
     // if not defined going to compile this code
         #ifdef IS_IN_BASE_PASS
-            return texture;
+            return surface;
         #else
             return 0;
         #endif
