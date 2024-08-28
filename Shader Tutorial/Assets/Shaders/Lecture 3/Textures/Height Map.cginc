@@ -63,7 +63,7 @@ struct Interpolators
 Interpolators vert (MeshData v)
 {
     Interpolators o;
-   // v.vertex.y += cos (v.uv.x + _Time.y ) *0.05;
+    v.vertex.y += cos (v.uv.x + _Time.y ) *0.05;
     o.vertex = UnityObjectToClipPos(v.vertex);
     
     o.uv = TRANSFORM_TEX(v.uv, _Albedo);
