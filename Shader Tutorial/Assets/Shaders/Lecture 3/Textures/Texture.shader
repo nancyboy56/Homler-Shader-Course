@@ -1,10 +1,10 @@
-Shader "Unlit/Texture 2"
+Shader "Unlit/Texture Light"
 {
 
     // input data
     Properties 
     {
-        _Albedo ("Texture", 2D) = "white" {}
+        _Albedo ("Texture Albedo", 2D) = "white" {}
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
         

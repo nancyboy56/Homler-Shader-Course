@@ -104,7 +104,7 @@ float4 frag (Interpolators i) : SV_Target
         return float4(diffuse * _Colour + specular, 1);
     #else
         // if not defined going to compile this code
-    
+     
         // so that it only outputs colour of the object once,
         //not for every light source
         #ifdef IS_IN_BASE_PASS

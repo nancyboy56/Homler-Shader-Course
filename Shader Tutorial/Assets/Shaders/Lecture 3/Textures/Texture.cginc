@@ -4,8 +4,8 @@
 
 #define USE_LIGHTING 
 #define TAU 6.283185307179586476925287
-sampler2D _MainTex;
-float4 _MainTex_ST;
+sampler2D _Albedo;
+float4 _Albedo_ST;
 float _Gloss;
 float4 _Colour;
 
@@ -55,7 +55,7 @@ Interpolators vert (MeshData v)
     
     o.vertex = UnityObjectToClipPos(v.vertex);
     
-    o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+    o.uv = TRANSFORM_TEX(v.uv, _Albedo);
     o.normal=UnityObjectToWorldNormal(v.normal);
     o.world = mul(unity_ObjectToWorld, v.vertex);
     //ingoring fog for now
@@ -69,6 +69,9 @@ Interpolators vert (MeshData v)
 //fragement shader
 float4 frag (Interpolators i) : SV_Target
 {
+    float3 albedo = tex2D(_Albedo, i.uv);
+
+    float3 texture =  albedo * _Colour.rgb; 
     // if defined then use lighting
     //instead of brackets
     #ifdef USE_LIGHTING
@@ -101,11 +104,11 @@ float4 frag (Interpolators i) : SV_Target
         // a bad estimation at energy consrvation
         specular = pow(specular, specularExponent) * _Gloss * attenuation;
         specular *= _LightColor0.xyz;
-        return float4(diffuse * _Colour + specular, 1);
+        return float4(diffuse * texture + specular, 1);
     #else
     // if not defined going to compile this code
         #ifdef IS_IN_BASE_PASS
-            return _Colour;
+            return texture;
         #else
             return 0;
         #endif
