@@ -1,4 +1,4 @@
-Shader "Unlit/Normal Wave"
+Shader "Unlit/Texture Wave"
 {
 
     // input data

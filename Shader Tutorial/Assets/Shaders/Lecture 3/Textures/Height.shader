@@ -14,6 +14,7 @@ Shader "Unlit/Height"
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
         _Strength("Normal Intensity", Range(0,10)) =1
+        _
     }
     
     SubShader
