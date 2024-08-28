@@ -88,7 +88,7 @@ float4 frag (Interpolators i) : SV_Target
     float3 albedo = tex2D(_Albedo, i.uv);
 
     float3 surface =  albedo * _Colour.rgb;
-    float3 tangentNormal = float4(UnpackNormal(tex2D(_Normals, i.uv)) *0.5 +0.5, 0);
+    float3 tangentNormal = float4(UnpackNormal(tex2D(_Normals, i.uv)), 0);
 
     float3x3 mtxTangToWorld = {
         i.tangent.x, i.bitangent.x, i.normal.x,
