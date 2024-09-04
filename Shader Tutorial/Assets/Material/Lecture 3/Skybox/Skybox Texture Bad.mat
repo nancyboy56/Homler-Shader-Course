@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Skybox Texture
-  m_Shader: {fileID: 4800000, guid: da327df8f82fcc54e890dfe9b3c772e4, type: 3}
+  m_Name: Skybox Texture Bad
+  m_Shader: {fileID: 4800000, guid: cfe3f61c1e1b64a4288ce07e6634625c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 578c8440a035e104e9ae49b5b099f1f4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

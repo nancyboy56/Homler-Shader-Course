@@ -84,19 +84,11 @@ Shader "Unlit/Skybox Texture"
                 
                 return o;
             }
-
-            float2 DirectionToRectilinear(float3 direction)
-            {
-                //0 to 1
-                float x =atan2(direction.z, direction.x) /TAU + 0.5;
-                float y = direction.y * 0.5 + 0.5;
-                return float2(x,y);
-            }
             
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                float3 skybox = tex2D(_MainTex, DirectionToRectilinear(i.view));
+                float3 skybox = tex2D(_MainTex, i.view);
                 return float4(skybox,1);
                 //ignoring fog
                 // UNITY_APPLY_FOG(i.fogCoord, col);
