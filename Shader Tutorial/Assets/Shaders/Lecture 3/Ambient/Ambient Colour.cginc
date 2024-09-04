@@ -7,6 +7,7 @@
 sampler2D _Albedo;
 sampler2D _Height;
 float4 _Albedo_ST;
+float4 _AmbientColour;
 float _Gloss;
 float4 _Colour;
 sampler2D _Normals;
@@ -15,7 +16,7 @@ float _TimeScale;
 float _xOffsetCo;
 float _YScale;
 float _HeightStrength;
-float _AmbientColour;
+
 //float4 _Normals_ST;
 
 
@@ -140,7 +141,7 @@ float4 frag (Interpolators i) : SV_Target
         float attenuation = LIGHT_ATTENUATION(i);
         float3 lambert = saturate(dot(normal, light));
         float3 diffuse = lambert * attenuation *_LightColor0.xyz;
-        diffuse+= _AmbientColour;
+        //diffuse+= _AmbientColour;
         #ifdef IS_IN_BASE_PASS
             diffuse+= _AmbientColour;
         #endif
