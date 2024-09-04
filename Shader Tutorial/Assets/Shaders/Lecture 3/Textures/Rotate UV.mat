@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Anti Aliasing
-  m_Shader: {fileID: 4800000, guid: 7281c590ae71eb7429f457c30b740b5e, type: 3}
+  m_Name: Rotate UV
+  m_Shader: {fileID: 4800000, guid: 6440a974fe749cf4580f23a1b56e90ad, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,18 +23,23 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ea6dcdb990b8d9347bbcd2577f0744c5, type: 3}
+    - _Albedo:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Height:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normals:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Border: 0.2
-    - _End: 0.8
-    - _Health: 0.78
-    - _Scale: 10
-    - _Start: 0.2
+    - _Gloss: 0.5
+    - _HeightStrength: 0.1
+    - _Strength: 1
     m_Colors:
-    - _EndColour: {r: 0, g: 1, b: 0, a: 1}
-    - _StartColour: {r: 1, g: 0, b: 0, a: 1}
+    - _Colour: {r: 1, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
