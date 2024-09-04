@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fresnel Frac
-  m_Shader: {fileID: 4800000, guid: e23bb42e23d7510458844fa1fa3bc3b1, type: 3}
+  m_Name: Skybox UV
+  m_Shader: {fileID: 4800000, guid: 8deb81f39f1dd964aa4822fdd7b74a46, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -28,9 +28,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _Gloss: 0.64
-    - _TimeScale: 2
-    m_Colors:
-    - _Colour: {r: 1, g: 0, b: 0.519052, a: 1}
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []
