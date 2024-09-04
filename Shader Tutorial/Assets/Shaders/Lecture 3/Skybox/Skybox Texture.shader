@@ -1,11 +1,10 @@
-Shader "Unlit/Skybox Colour"
+Shader "Unlit/Skybox Texture"
 {
 
     // input data
     Properties 
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Colour("Colour", Color) = (1,1,1,1)
         
     }
     
@@ -34,7 +33,6 @@ Shader "Unlit/Skybox Colour"
             #define TAU 6.283185307179586476925287
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float4 _Colour;
             
             //automaticaally filled out by unity
             struct MeshData
@@ -51,10 +49,10 @@ Shader "Unlit/Skybox Colour"
                 //tangents have be float4s!
                 float4 tangent: TANGENT;
 
-                //uv coordinates
-                float3 uv : TEXCOORD0;
+                //view direction
+                float3 view : TEXCOORD0;
                 
-                float4 uv1 : TEXCOORD1;
+                
             };
             
             struct Interpolators
@@ -62,7 +60,8 @@ Shader "Unlit/Skybox Colour"
                 //clip space postion of this vertex, between -1,1 for this particular position
                 float4 vertex : SV_POSITION;
 
-                float3 uv : TEXCOORD0;
+                //view direction
+                float3 view : TEXCOORD0;
                 
 
                 // for fog
@@ -78,7 +77,7 @@ Shader "Unlit/Skybox Colour"
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 
-                o.uv = v.uv;
+                o.view = v.view;
 
                 //ingoring fog for now
                 //UNITY_TRANSFER_FOG(o,o.vertex);
@@ -89,12 +88,12 @@ Shader "Unlit/Skybox Colour"
             //fragement shader
             float4 frag (Interpolators i) : SV_Target
             {
-                float4 colour = tex2D(_MainTex, i.uv);
-                return _Colour;
+                float3 skybox = tex2D(_MainTex, i.view);
+                return float4(skybox,1);
                 //ignoring fog
                 // UNITY_APPLY_FOG(i.fogCoord, col);
                 
-                return colour;
+                
             }
             ENDCG
         }
