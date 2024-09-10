@@ -117,7 +117,7 @@ Interpolators vert (MeshData v)
 //fragement shader
 float4 frag (Interpolators i) : SV_Target
 {
-    float3 iblColour = tex2D(_DiffuseIBL, DirectionToRectilinear(i.normal)).xyz;
+    //float3 iblColour = tex2D(_DiffuseIBL, DirectionToRectilinear(i.normal)).xyz;
     #ifdef IS_IN_BASE_PASS
        
         return float4(iblColour,0);
