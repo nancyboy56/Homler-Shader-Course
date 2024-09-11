@@ -1,4 +1,4 @@
-Shader "Unlit/Reflected Light"
+Shader "Unlit/IBL"
 {
 
     // input data
@@ -34,7 +34,7 @@ Shader "Unlit/Reflected Light"
             #pragma vertex vert
             #pragma fragment frag
             #define IS_IN_BASE_PASS
-            #include "Reflected Light.cginc"
+            #include "IBL.cginc"
             ENDCG
         }
 
@@ -49,7 +49,7 @@ Shader "Unlit/Reflected Light"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdadd
-            #include "Reflected Light.cginc"
+            #include "IBL.cginc"
             ENDCG
         }
     }
