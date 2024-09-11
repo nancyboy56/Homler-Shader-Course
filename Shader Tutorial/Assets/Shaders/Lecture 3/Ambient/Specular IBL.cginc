@@ -123,19 +123,9 @@ Interpolators vert (MeshData v)
 //fragement shader
 float4 frag (Interpolators i) : SV_Target
 {
-    // 6 is a guess at how many mip levels we have
-    // there might be a way of getting it but Freya doesnt know
-    //so 6 it is 
-    float mip = (1- _Gloss) * 6;
-    float3 viewV = normalize(_WorldSpaceCameraPos - i.world);
-    float3 viewReflection = reflect(-viewV, i.normal);
-    float3 iblColour = tex2Dlod(_SpecularIBL, float4(DirectionToRectilinear(viewReflection),mip,mip)).xyz;
-    #ifdef IS_IN_BASE_PASS
-       
-        return float4(iblColour,0);
-    #else
-        return float4(0,0,0,0);
-    #endif
+    
+   
+    
     //float3 iblColour = tex2Dlod(_SpecularIBL, float4(DirectionToRectilinear(i.normal),0,0)).xyz;
     
     //return float4 (1,1,1,1);
@@ -173,7 +163,7 @@ float4 frag (Interpolators i) : SV_Target
         float3 diffuse = lambert * attenuation *_LightColor0.xyz;
         //diffuse+= _AmbientColour;
         #ifdef IS_IN_BASE_PASS
-            //float3 iblColour = tex2Dlod(_DiffuseIBL, float4(DirectionToRectilinear(i.normal),0,0)).xyz;
+            float3 iblColour = tex2Dlod(_DiffuseIBL, float4(DirectionToRectilinear(i.normal),0,0)).xyz;
             diffuse+= iblColour;
         #endif
     
@@ -192,6 +182,17 @@ float4 frag (Interpolators i) : SV_Target
         // a bad estimation at energy consrvation
         specular = pow(specular, specularExponent) * _Gloss * attenuation;
         specular *= _LightColor0.xyz;
+
+        #ifdef IS_IN_BASE_PASS
+            // 6 is a guess at how many mip levels we have
+            // there might be a way of getting it but Freya doesnt know
+            //so 6 it is
+            float mip = (1- _Gloss) * 6;
+            
+            float3 viewReflection = reflect(-view, normal);
+            float3 specularIBL = tex2Dlod(_SpecularIBL, float4(DirectionToRectilinear(viewReflection),mip,mip)).xyz;
+            specular +=specularIBL;
+        #endif
         return float4(diffuse * surface + specular, 1);
     #else
     // if not defined going to compile this code
