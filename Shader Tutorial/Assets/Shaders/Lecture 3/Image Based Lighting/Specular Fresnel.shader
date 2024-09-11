@@ -12,7 +12,7 @@ Shader "Unlit/Specular Fresnel"
         //if white it wold add and be very bright  
         [NoScaleOffset]_DiffuseIBL ("Diffuse IBL", 2D) = "black" {}
         [NoScaleOffset]_SpecularIBL ("Specular IBL", 2D) = "black" {}
-        _FresnelPower("Fresnel Power", Range (0,10)) =5;
+        
         _SpecularOcculsion("Specular Occulsion", Range(0,2)) =1
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
