@@ -67,6 +67,9 @@ struct Interpolators
     
 };
 
+// map direction to a point on the texture
+// taking a 3d direction and mapping it to a 2d texture
+// making the texture  into a sphere around the player
 float2 DirectionToRectilinear(float3 direction)
 {
     //0 to 1
@@ -74,6 +77,7 @@ float2 DirectionToRectilinear(float3 direction)
     float y = direction.y * 0.5 + 0.5;
     return float2(x,y);
 }
+
 
 float2 Rotate(float2 v, float angleRad)
 {
@@ -117,7 +121,7 @@ Interpolators vert (MeshData v)
 //fragement shader
 float4 frag (Interpolators i) : SV_Target
 {
-    //float3 iblColour = tex2D(_DiffuseIBL, DirectionToRectilinear(i.normal)).xyz;
+    float3 iblColour = tex2D(_DiffuseIBL, DirectionToRectilinear(i.normal)).xyz;
     #ifdef IS_IN_BASE_PASS
        
         return float4(iblColour,0);

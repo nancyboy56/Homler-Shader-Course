@@ -7,6 +7,9 @@ Shader "Unlit/IBL"
         _Albedo ("Texture Albedo", 2D) = "white" {} 
         [NoScaleOffset]_Normals("Normal", 2D) ="bump" {}
         [NoScaleOffset]_Height("Height", 2D) ="gray" {}
+        
+        // default as black so that if u have no skybox it adds nothing
+        //if white it wold add and be very bright 
         _DiffuseIBL ("Skybox IBL", 2D) = "black" {}
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
@@ -31,7 +34,7 @@ Shader "Unlit/IBL"
             #pragma vertex vert
             #pragma fragment frag
             #define IS_IN_BASE_PASS
-            #include "IBL.cginc"
+            #include "Reflected Light.cginc"
             ENDCG
         }
 
@@ -46,7 +49,7 @@ Shader "Unlit/IBL"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdadd
-            #include "IBL.cginc"
+            #include "Reflected Light.cginc"
             ENDCG
         }
     }
