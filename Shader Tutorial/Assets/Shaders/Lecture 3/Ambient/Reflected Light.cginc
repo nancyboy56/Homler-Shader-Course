@@ -16,7 +16,7 @@ float _TimeScale;
 float _xOffsetCo;
 float _YScale;
 float _HeightStrength;
-float4 _DiffuseIBL;
+sampler2D _DiffuseIBL;
 
 //float4 _Normals_ST;
 
@@ -121,7 +121,7 @@ Interpolators vert (MeshData v)
 //fragement shader
 float4 frag (Interpolators i) : SV_Target
 {
-    float3 iblColour = tex2D(_DiffuseIBL, DirectionToRectilinear(i.normal)).xyz;
+    float3 iblColour = tex2Dlod(_DiffuseIBL, float4(DirectionToRectilinear(i.normal),0,0)).xyz;
     #ifdef IS_IN_BASE_PASS
        
         return float4(iblColour,0);

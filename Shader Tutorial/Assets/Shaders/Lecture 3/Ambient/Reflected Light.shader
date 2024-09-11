@@ -9,7 +9,7 @@ Shader "Unlit/IBL"
         [NoScaleOffset]_Height("Height", 2D) ="gray" {}
         
         // default as black so that if u have no skybox it adds nothing
-        //if white it wold add and be very bright 
+        //if white it wold add and be very bright  
         _DiffuseIBL ("Skybox IBL", 2D) = "black" {}
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
