@@ -185,7 +185,7 @@ float4 frag (Interpolators i) : SV_Target
         specular = pow(specular, specularExponent) * _Gloss * attenuation;
         specular *= _LightColor0.xyz;
 
-        float fresnel = pow(1- saturate(dot(view, normal)), _FresnelPower);
+        float fresnel = 1- saturate(dot(view, normal));
         #ifdef IS_IN_BASE_PASS
             // 6 is a guess at how many mip levels we have
             // there might be a way of getting it but Freya doesnt know
