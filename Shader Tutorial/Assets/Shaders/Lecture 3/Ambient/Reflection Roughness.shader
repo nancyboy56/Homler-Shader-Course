@@ -1,4 +1,4 @@
-Shader "Unlit/Reflection Clear"
+Shader "Unlit/Reflection Roughness"
 {
 
     // input data
@@ -35,7 +35,7 @@ Shader "Unlit/Reflection Clear"
             #pragma vertex vert
             #pragma fragment frag
             #define IS_IN_BASE_PASS
-            #include "Reflection Specular.cginc"
+            #include "Reflection Roughness.cginc"
             ENDCG
         }
 
@@ -50,7 +50,7 @@ Shader "Unlit/Reflection Clear"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdadd
-            #include "Reflection Specular.cginc"
+            #include "Reflection Roughness.cginc"
             ENDCG
         }
     }

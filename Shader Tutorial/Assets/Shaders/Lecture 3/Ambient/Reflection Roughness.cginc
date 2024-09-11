@@ -123,9 +123,13 @@ Interpolators vert (MeshData v)
 //fragement shader
 float4 frag (Interpolators i) : SV_Target
 {
+    // 7 is a guess at how many mip levels we have
+    // there might be a way of getting it but Freya doesnt know
+    //so 7 it is 
+    float mip = (1- _Gloss) * 7;
     float3 viewV = normalize(_WorldSpaceCameraPos - i.world);
     float3 viewReflection = reflect(-viewV, i.normal);
-    float3 iblColour = tex2Dlod(_SpecularIBL, float4(DirectionToRectilinear(viewReflection),0,0)).xyz;
+    float3 iblColour = tex2Dlod(_SpecularIBL, float4(DirectionToRectilinear(viewReflection),mip,mip)).xyz;
     #ifdef IS_IN_BASE_PASS
        
         return float4(iblColour,0);
