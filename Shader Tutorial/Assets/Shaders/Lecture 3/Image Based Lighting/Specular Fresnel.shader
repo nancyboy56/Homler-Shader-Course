@@ -1,4 +1,4 @@
-Shader "Unlit/Specular IBL Strength"
+Shader "Unlit/Specular Fresnel"
 {
 
     // input data
@@ -12,6 +12,7 @@ Shader "Unlit/Specular IBL Strength"
         //if white it wold add and be very bright  
         [NoScaleOffset]_DiffuseIBL ("Diffuse IBL", 2D) = "black" {}
         [NoScaleOffset]_SpecularIBL ("Specular IBL", 2D) = "black" {}
+        _FresnelPower("Fresnel Power", Range (0,10)) =5;
         _SpecularOcculsion("Specular Occulsion", Range(0,2)) =1
         _Gloss("Gloss Amount", Range (0,2) ) = 0.5
         _Colour("Surface Colour", Color) = (1,1 ,0,1)
@@ -37,7 +38,7 @@ Shader "Unlit/Specular IBL Strength"
             #pragma vertex vert
             #pragma fragment frag
             #define IS_IN_BASE_PASS
-            #include "Specular IBL Strength.cginc"
+            #include "Specular Fresnel.cginc"
             ENDCG
         }
 
@@ -52,7 +53,7 @@ Shader "Unlit/Specular IBL Strength"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdadd
-            #include "Specular IBL Strength.cginc"
+            #include "Specular Fresnel.cginc"
             ENDCG
         }
     }

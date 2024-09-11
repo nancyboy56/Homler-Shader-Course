@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Specular IBL Strength
+  m_Name: Specular Fresnel
   m_Shader: {fileID: 4800000, guid: cf5c9a4dffa3c4b418b7cc97e6f4ec2c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
