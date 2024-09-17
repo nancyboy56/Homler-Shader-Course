@@ -31,7 +31,7 @@ Material:
     m_Floats:
     - _End: 0.8
     - _Flash: 9.8
-    - _Health: 0.134
+    - _Health: 0.732
     - _Start: 0.2
     m_Colors:
     - _EndColour: {r: 0, g: 1, b: 0, a: 1}

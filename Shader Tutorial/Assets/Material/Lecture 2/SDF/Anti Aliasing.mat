@@ -31,7 +31,7 @@ Material:
     m_Floats:
     - _Border: 0.2
     - _End: 0.8
-    - _Health: 0.78
+    - _Health: 0.862
     - _Scale: 10
     - _Start: 0.2
     m_Colors:

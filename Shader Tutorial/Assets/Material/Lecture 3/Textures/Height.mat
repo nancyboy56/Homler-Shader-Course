@@ -38,7 +38,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Gloss: 1.32
-    - _HeightStrength: 0.23
+    - _HeightStrength: 0.656
     - _Strength: 1
     m_Colors:
     - _Colour: {r: 0.4566037, g: 0.21624058, b: 0.45199782, a: 1}

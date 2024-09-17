@@ -42,6 +42,6 @@ Material:
     - _Strength: 2.1
     - _TimeScale: 0
     m_Colors:
-    - _AmbientColour: {r: 0.16051969, g: 0.32934102, b: 0.6301887, a: 0.45490196}
+    - _AmbientColour: {r: 0.48671415, g: 0.5786919, b: 0.7433963, a: 0.45490196}
     - _Colour: {r: 0.87169814, g: 0.42598078, b: 0.42598078, a: 1}
   m_BuildTextureStacks: []
